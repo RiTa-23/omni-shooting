@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Boost",
+                    "name": "Dodge",
                     "type": "Button",
                     "id": "10f8d005-bce3-4542-b001-2cef4d354494",
                     "expectedControlType": "Button",
@@ -92,7 +92,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Boost",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

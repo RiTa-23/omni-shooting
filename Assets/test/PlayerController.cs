@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     //入力を受け取るPlayerInput
-    private PlayerInput _playerInput;
+    private PlayerInput playerInput;
     //移動速度
     [SerializeField] float speed;
     //移動入力方向
@@ -22,7 +23,12 @@ public class PlayerController : MonoBehaviour
     //弾発射ポイント
     private Vector3 bulletPoint;
     //弾が消えるまで
-    private float bulletLostTime=3;
+    private float bulletLostTime=2;
+
+    //SE&BGM
+    AudioSource audioSource;
+    [SerializeField] AudioClip shootSE;
+    [SerializeField] AudioClip dodgeSE;
 
     //ベクトルから角度を求める
     public static float Vector2ToAngle(Vector2 vector)
@@ -38,7 +44,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        _playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<PlayerInput>();
+        audioSource = GetComponent<AudioSource>();
+
     }
     private void OnMove(InputValue movementValue)
     {
@@ -61,15 +69,25 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void OnBoost()
+    private void OnDodge()
     {
-        rb.AddForce(movementValue_*800);
+        if(movementValue_!=new Vector2(0,0))
+        {
+            rb.AddForce(movementValue_ * 1000);
+            audioSource.PlayOneShot(dodgeSE);
+        }
     }
 
     private void OnFire()
     {
         bulletPoint = transform.Find("bulletPoint").transform.position;
         GameObject bullet = Instantiate(bulletPrefab,bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
+        audioSource.PlayOneShot(shootSE);
+
+        bulletStatus bulletStatus_;
+        bulletStatus_ = bullet.GetComponent<bulletStatus>();
+        bulletStatus_.Owner = playerInput.user.index;
+
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
         // 弾速は自由に設定
         bulletRb.AddForce(AngleToVector2(rb.rotation+90) * bulletSpeed);
@@ -83,7 +101,6 @@ public class PlayerController : MonoBehaviour
         //一定速度以上なら減速
         if(rb.velocity.magnitude > speed)
         {
-            print("減速");
             rb.velocity *=0.95f;
         }
     }
