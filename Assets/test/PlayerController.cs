@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     //“ü—Í‚ğó‚¯æ‚éPlayerInput
     private PlayerInput playerInput;
+    private PlayerStatus playerStatus;
+    private int Energy;
     //ˆÚ“®‘¬“x
     [SerializeField] float speed;
     //ˆÚ“®“ü—Í•ûŒü
@@ -30,6 +32,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip shootSE;
     [SerializeField] AudioClip dodgeSE;
 
+    [SerializeField] ParticleSystem dodgeEffect;
+
     //ƒxƒNƒgƒ‹‚©‚çŠp“x‚ğ‹‚ß‚é
     public static float Vector2ToAngle(Vector2 vector)
     {
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
         audioSource = GetComponent<AudioSource>();
-
+        playerStatus = GetComponent<PlayerStatus>();
     }
     private void OnMove(InputValue movementValue)
     {
@@ -71,35 +75,43 @@ public class PlayerController : MonoBehaviour
 
     private void OnDodge()
     {
-        if(movementValue_!=new Vector2(0,0))
+        if(movementValue_!=new Vector2(0,0)&&playerStatus.Energy>=20)
         {
             rb.AddForce(movementValue_ * 1000);
             audioSource.PlayOneShot(dodgeSE);
+            dodgeEffect.Play();
+            playerStatus.Energy -= 10;//‰Â•Ï‚É‚·‚é
+            playerStatus.EnergyUpdate();
         }
     }
 
     private void OnFire()
     {
-        bulletPoint = transform.Find("bulletPoint").transform.position;
-        GameObject bullet = Instantiate(bulletPrefab,bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
-        audioSource.PlayOneShot(shootSE);
+        if(playerStatus.Energy>=10)
+        {
+            bulletPoint = transform.Find("bulletPoint").transform.position;
+            GameObject bullet = Instantiate(bulletPrefab, bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
+            audioSource.PlayOneShot(shootSE);
+            playerStatus.Energy -= 12;//‰Â•Ï‚É‚·‚é
+            playerStatus.EnergyUpdate();
 
-        bulletStatus bulletStatus_;
-        bulletStatus_ = bullet.GetComponent<bulletStatus>();
-        bulletStatus_.Owner = playerInput.user.index;
+            bulletStatus bulletStatus_;
+            bulletStatus_ = bullet.GetComponent<bulletStatus>();
+            bulletStatus_.Owner = playerInput.user.index;
 
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-        // ’e‘¬‚Í©—R‚Éİ’è
-        bulletRb.AddForce(AngleToVector2(rb.rotation+90) * bulletSpeed);
-        // ŠÔ·‚Å–C’e‚ğ”j‰ó‚·‚é
-        Destroy(bullet, bulletLostTime);
+            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+            // ’e‘¬‚Í©—R‚Éİ’è
+            bulletRb.AddForce(AngleToVector2(rb.rotation + 90) * bulletSpeed);
+            // ŠÔ·‚Å–C’e‚ğ”j‰ó‚·‚é
+            Destroy(bullet, bulletLostTime);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         //ˆê’è‘¬“xˆÈã‚È‚çŒ¸‘¬
-        if(rb.velocity.magnitude > speed)
+        if (rb.velocity.magnitude > speed)
         {
             rb.velocity *=0.95f;
         }

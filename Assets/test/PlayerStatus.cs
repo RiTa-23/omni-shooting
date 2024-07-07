@@ -1,13 +1,16 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]int HP;
-    [SerializeField]int Energy;
+    [SerializeField]public float Energy;
+    [SerializeField] int MaxHP;
     [SerializeField]int MaxEnergy;
     PlayerInput playerInput;
 
@@ -15,6 +18,12 @@ public class PlayerStatus : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip deadSE;
     [SerializeField] AudioClip hitSE;
+    //Effect
+    [SerializeField] ParticleSystem deadEffect;
+    [SerializeField] ParticleSystem hitEffect;
+    //ステータスバー
+    [SerializeField]Slider HPbar;
+    [SerializeField]Slider Energybar; 
 
     private void Start()
     {
@@ -31,21 +40,48 @@ public class PlayerStatus : MonoBehaviour
             if(bulletStatus_.Owner!= playerInput.user.index)
             {
                 HP -= bulletStatus_.Damage;
+                HPbar.value =(float)HP/(float)MaxHP;
                 Destroy(collision);
+                hitEffect.Play();
                 audioSource.PlayOneShot(hitSE);
+                gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
+                {
+                    gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.1f);
+                });
+                
+               
             }
             
         }
     }
+    public void EnergyUpdate()
+    {
+        Energybar.value = (float)Energy / (float)MaxEnergy;
+    }
 
-    // Update is called once per frame
+    bool dead = false;
     void Update()
     {
-        if (HP <= 0)
+        if (Energy < MaxEnergy)
         {
+            Energy += 0.12f;//可変にする
+            EnergyUpdate();
+        }
+
+        if (HP <= 0&&!dead)
+        {
+            dead = true;
             print($"プレイヤー#{playerInput.user.index}が撃墜！");
             AudioSource.PlayClipAtPoint(deadSE, new Vector3(0, 0, -10));
-            Destroy(gameObject);
+            deadEffect.Play();
+            gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.5f).OnComplete(() =>
+            {
+                gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.1f).OnComplete(() =>
+                {
+                    Destroy(gameObject.transform.parent.gameObject);
+                });
+
+            });
         }
     }
 }
