@@ -75,12 +75,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnDodge()
     {
-        if(movementValue_!=new Vector2(0,0)&&playerStatus.Energy>=20)
+        if(movementValue_!=new Vector2(0,0)&&playerStatus.Energy>=12)
         {
             rb.AddForce(movementValue_ * 1000);
             audioSource.PlayOneShot(dodgeSE);
             dodgeEffect.Play();
-            playerStatus.Energy -= 10;//‰Â•Ï‚É‚·‚é
+            playerStatus.Energy -= 12;//‰Â•Ï‚É‚·‚é
             playerStatus.EnergyUpdate();
         }
     }
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
             bulletPoint = transform.Find("bulletPoint").transform.position;
             GameObject bullet = Instantiate(bulletPrefab, bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
             audioSource.PlayOneShot(shootSE);
-            playerStatus.Energy -= 12;//‰Â•Ï‚É‚·‚é
+            playerStatus.Energy -= 10;//‰Â•Ï‚É‚·‚é
             playerStatus.EnergyUpdate();
 
             bulletStatus bulletStatus_;
