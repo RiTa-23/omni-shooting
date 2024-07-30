@@ -45,6 +45,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: player
       objectReference: {fileID: 0}
+    - target: {fileID: 2203922456458208737, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2467325507304847943, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -89,6 +93,10 @@ PrefabInstance:
       propertyPath: HPbar
       value: 
       objectReference: {fileID: 8676470801782390499}
+    - target: {fileID: 2712209266945647559, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: enterSE
+      value: 
+      objectReference: {fileID: 8300000, guid: da8a9b8f657a6914895127c4303859f8, type: 3}
     - target: {fileID: 2712209266945647559, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: Energybar
       value: 
@@ -145,6 +153,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 5984386817082555415}
+    - target: {fileID: 2753550843187248108, guid: e78328a2743f54b43bc544dad94ffd04, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2851254508088750617, guid: e78328a2743f54b43bc544dad94ffd04, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -19,6 +19,7 @@ public class PlayerStatus : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip deadSE;
     [SerializeField] AudioClip hitSE;
+    [SerializeField] AudioClip enterSE;
     //Effect
     [SerializeField] ParticleSystem deadEffect;
     [SerializeField] ParticleSystem hitEffect;
@@ -40,6 +41,7 @@ public class PlayerStatus : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         print($"プレイヤー#{playerInput.user.index}が入室");
+        audioSource.PlayOneShot(enterSE);
 
         //カラーコード
         var oneP_color = "#FF00F3";
