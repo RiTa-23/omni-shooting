@@ -9,11 +9,14 @@ using UnityEngine.UI;
 public class PlayerStatus : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField]int HP;
+    //ステータス
+    [SerializeField]public int HP;
     [SerializeField]public float Energy;
-    [SerializeField] int MaxHP;
-    [SerializeField]int MaxEnergy;
-    PlayerInput playerInput;
+    [SerializeField]public int MaxHP;
+    [SerializeField]public int MaxEnergy;
+
+    public PlayerInput playerInput;
+    public int P_Num;//初期のplayerInput.user.indexの値
 
     //SE&BGM
     AudioSource audioSource;
@@ -32,6 +35,8 @@ public class PlayerStatus : MonoBehaviour
     public float energyNaturalRecovery=0.12f;
     //カラーコード
     string colorCode;
+
+    bool isDead = false;
     
 
     private void Start()
@@ -40,7 +45,8 @@ public class PlayerStatus : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        print($"プレイヤー#{playerInput.user.index}が入室");
+        P_Num = playerInput.user.index;
+        print($"プレイヤー#{P_Num}が入室");
         audioSource.PlayOneShot(enterSE);
 
         //カラーコード
@@ -72,16 +78,33 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("bullet"))
+        if (collision.gameObject.CompareTag("bullet")&&!isDead)
         {
             bulletStatus bulletStatus_;
             bulletStatus_ = collision.GetComponent<bulletStatus>();
-            if(bulletStatus_.Owner!= playerInput.user.index)
+
+            int killeMeEnemy = bulletStatus_.Owner;
+
+            if (killeMeEnemy!= P_Num)
             {
                 HP -= bulletStatus_.Damage;
+
+                //敵のリザルト調整
+                GameObject GM = GameObject.Find("GameManager");
+                var VS_GM = GM.GetComponent<VS_GameManager>();
+
+                VS_GM.giveDamage[killeMeEnemy] += bulletStatus_.Damage;
+                //HPが0以下なら自分を倒した敵の敵を倒した数を加算し、自分のランクを決定
+                if (HP <= 0)
+                {
+                    isDead = true;
+                    VS_GM.killNum[killeMeEnemy]++;
+                    VS_GM.Rank[P_Num] = VS_GM.p.Length;
+                }
+
                 HPbar.value =(float)HP/(float)MaxHP;
                 Destroy(collision);
-                hitEffect.Play();
+                Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
                 audioSource.PlayOneShot(hitSE);
                 gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
                 {
@@ -89,11 +112,8 @@ public class PlayerStatus : MonoBehaviour
                     {
                         spriteRenderer.color = color;
                     }
-                });
-                
-               
+                });  
             }
-            
         }
     }
     public void EnergyUpdate()
@@ -101,7 +121,8 @@ public class PlayerStatus : MonoBehaviour
         Energybar.value = (float)Energy / (float)MaxEnergy;
     }
 
-    bool dead = false;
+    //初めて条件に当てはまったか
+    bool isFirst = false;
     void Update()
     {
         if (Energy < MaxEnergy)
@@ -110,11 +131,12 @@ public class PlayerStatus : MonoBehaviour
             EnergyUpdate();
         }
 
-        if (HP <= 0&&!dead)
+        if (HP <= 0&&!isFirst)
         {
-            dead = true;
+            isFirst = true;
             print($"プレイヤー#{playerInput.user.index}が撃墜！");
             AudioSource.PlayClipAtPoint(deadSE, new Vector3(0, 0, -10));
+            Instantiate(deadEffect, this.transform.position, Quaternion.identity, this.transform);
             deadEffect.Play();
             gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.5f).OnComplete(() =>
             {

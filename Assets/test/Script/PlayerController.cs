@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip shootSE;
     [SerializeField] AudioClip dodgeSE;
-
+    //effect
     [SerializeField] ParticleSystem dodgeEffect;
 
     //ベクトルから角度を求める
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.AddForce(movementValue_ * 1000);
                 audioSource.PlayOneShot(dodgeSE);
-                dodgeEffect.Play();
+                Instantiate(dodgeEffect, this.transform.position, Quaternion.identity, this.transform);
                 playerStatus.Energy -= dodgeEnergy;
                 playerStatus.EnergyUpdate();
             }
@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
                 bulletStatus bulletStatus_;
                 bulletStatus_ = bullet.GetComponent<bulletStatus>();
-                bulletStatus_.Owner = playerInput.user.index;
+                bulletStatus_.Owner = playerStatus.P_Num;
 
                 Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
                 // 弾速は自由に設定

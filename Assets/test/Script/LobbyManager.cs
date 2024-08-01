@@ -48,11 +48,19 @@ public class LobbyManager : MonoBehaviour
             for(int i=0; i<p.Length;i++)
             {
                 DontDestroyOnLoad(p[i].transform.parent);
-                p[i].GetComponent<PlayerController>().isControllOk = true;
-                p[i].GetComponent<PlayerController>().isFireOk = true;
-
+                p[i].GetComponent<PlayerController>().isControllOk = false;
+                //体力、速度を初期化
+                p[i].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                var playerStatus = p[i].GetComponent<PlayerStatus>();
+                playerStatus.Energy = playerStatus.MaxEnergy;
             }
-            SceneManager.LoadScene("vs_stage");
+            StartCoroutine(LoadScene());
         }
+    }
+    //時間差でシーンを読み込む
+    IEnumerator LoadScene()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("vs_stage");
     }
 }
