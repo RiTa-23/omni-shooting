@@ -118,6 +118,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: enterSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 953ce87cb4cf16f408950546ddf28c4c, type: 3}
+    - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: cancelSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 29733314bf41e004981e669cda15f071, type: 3}
+    - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: dodgeEffect
       value: 
       objectReference: {fileID: 7624689711405327701, guid: 1994f39ac9d7458458a9391afb1aee97, type: 3}
@@ -169,14 +177,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1182351320943533909, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2149169520528280530}
+      addedObject: {fileID: 3054927546578920054}
   m_SourcePrefab: {fileID: 100100000, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
 --- !u!1 &5984386817082555415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1182351320943533909, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
   m_PrefabInstance: {fileID: 4856110036338991938}
   m_PrefabAsset: {fileID: 0}
---- !u!60 &2149169520528280530
+--- !u!60 &3054927546578920054
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

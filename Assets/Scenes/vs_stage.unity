@@ -632,17 +632,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cce4b5499a039f4a8c7969f17a4c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPos: {fileID: 546238329}
+  spawnsize: {x: 10, y: 5}
+  tempPos: {fileID: 0}
   spawnEffect: {fileID: 8776867748425003609, guid: 16a7227f10ed418439d6539e290f90f5, type: 3}
   p: []
   frontCanvas: {fileID: 878380206}
   spawnSE: {fileID: 8300000, guid: 234b4cff937ed7244a9c6f78402f3652, type: 3}
   readySE: {fileID: 8300000, guid: 82565426b83c2bf49a8d0e947af91b63, type: 3}
   goSE: {fileID: 8300000, guid: 5b2b52539daedd249961cbf62296a2f9, type: 3}
+  winnerSE: {fileID: 8300000, guid: 65c11de165ea5a443a276c16e30b3865, type: 3}
+  resultSE: {fileID: 8300000, guid: bacec3f9befaaa34cb4af728646ce908, type: 3}
   BGM: {fileID: 1956532959}
+  aliveNum: 0
+  isDead: 
   killNum: 
   giveDamage: 
   Rank: 
+  isResultWait: 0
+  isResultOk: 
 --- !u!82 &384712449
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2825,7 +2832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 145.76004, y: -50}
+  m_AnchoredPosition: {x: 500, y: -50}
   m_SizeDelta: {x: 200.2, y: 232.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1675728876

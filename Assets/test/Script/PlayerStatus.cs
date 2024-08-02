@@ -12,11 +12,12 @@ public class PlayerStatus : MonoBehaviour
     //ステータス
     [SerializeField]public int HP;
     [SerializeField]public float Energy;
-    [SerializeField]public int MaxHP;
-    [SerializeField]public int MaxEnergy;
+
+    [SerializeField]public int MaxHP=100;
+    [SerializeField]public int MaxEnergy=100;
 
     public PlayerInput playerInput;
-    public int P_Num;//初期のplayerInput.user.indexの値
+    public int P_Num;//プレイヤー番号（初期のplayerInput.user.indexの値）
 
     //SE&BGM
     AudioSource audioSource;
@@ -29,21 +30,27 @@ public class PlayerStatus : MonoBehaviour
     //ステータスバー
     [SerializeField]Slider HPbar;
     [SerializeField]Slider Energybar;
-    private new Renderer renderer;
     private SpriteRenderer spriteRenderer;
     //エネルギー自然回復量
     public float energyNaturalRecovery=0.12f;
     //カラーコード
     string colorCode;
+    //VS_GameManager
+    GameObject GM;
+    public VS_GameManager VS_GM;
+    //PlayerController
+    PlayerController playerController;
 
-    bool isDead = false;
-    
+
+
 
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        playerController=gameObject.GetComponent<PlayerController>();
 
         P_Num = playerInput.user.index;
         print($"プレイヤー#{P_Num}が入室");
@@ -78,7 +85,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("bullet")&&!isDead)
+        if (collision.gameObject.CompareTag("bullet") && !VS_GM.isDead[P_Num])
         {
             bulletStatus bulletStatus_;
             bulletStatus_ = collision.GetComponent<bulletStatus>();
@@ -87,23 +94,19 @@ public class PlayerStatus : MonoBehaviour
 
             if (killeMeEnemy!= P_Num)
             {
-                HP -= bulletStatus_.Damage;
+                HPUpdate(-bulletStatus_.Damage);
 
                 //敵のリザルト調整
-                GameObject GM = GameObject.Find("GameManager");
-                var VS_GM = GM.GetComponent<VS_GameManager>();
-
                 VS_GM.giveDamage[killeMeEnemy] += bulletStatus_.Damage;
-                //HPが0以下なら自分を倒した敵の敵を倒した数を加算し、自分のランクを決定
+                //HPが0以下なら自分を倒した敵のキル数を加算
                 if (HP <= 0)
                 {
-                    isDead = true;
                     VS_GM.killNum[killeMeEnemy]++;
-                    VS_GM.Rank[P_Num] = VS_GM.p.Length;
                 }
-
-                HPbar.value =(float)HP/(float)MaxHP;
+                //弾を消す
                 Destroy(collision);
+
+                //hitEffect
                 Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
                 audioSource.PlayOneShot(hitSE);
                 gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
@@ -116,36 +119,75 @@ public class PlayerStatus : MonoBehaviour
             }
         }
     }
-    public void EnergyUpdate()
+    public void EnergyUpdate(float recoveryAmount)
     {
+        Energy += recoveryAmount;
+        if(Energy > MaxEnergy)
+        {
+            Energy = MaxEnergy;
+        }
         Energybar.value = (float)Energy / (float)MaxEnergy;
     }
-
-    //初めて条件に当てはまったか
-    bool isFirst = false;
-    void Update()
+    public void HPUpdate(int recoveryAmount)
     {
+        HP += recoveryAmount;
+        if(HP>MaxHP)
+        {
+            HP = MaxHP;
+        }
+        HPbar.value = (float)HP / (float)MaxHP;
+    }
+
+    void Update()
+    {   
         if (Energy < MaxEnergy)
         {
-            Energy += energyNaturalRecovery;
-            EnergyUpdate();
+            EnergyUpdate(energyNaturalRecovery);
         }
 
-        if (HP <= 0&&!isFirst)
+        //脱落処理
+        if (HP <= 0 && !VS_GM.isDead[P_Num])
         {
-            isFirst = true;
+            //isDeadをtrue、Rankに生き残っている数を代入→aliveNumを減らす
+            VS_GM.isDead[P_Num] = true;
+            VS_GM.Rank[P_Num] = VS_GM.aliveNum;
+            VS_GM.aliveNum--;
+            //操作不可にする
+            playerController.AllControllArrow(false, false);
+
             print($"プレイヤー#{playerInput.user.index}が撃墜！");
             AudioSource.PlayClipAtPoint(deadSE, new Vector3(0, 0, -10));
-            Instantiate(deadEffect, this.transform.position, Quaternion.identity, this.transform);
-            deadEffect.Play();
+            var deadEffect_ =Instantiate(deadEffect, this.transform.position, Quaternion.identity, this.transform);
             gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.5f).OnComplete(() =>
             {
-                gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.1f).OnComplete(() =>
+                gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.2f).OnComplete(() =>
                 {
-                    Destroy(gameObject.transform.parent.gameObject);
+                    //死亡エフェクトを切り離す
+                    deadEffect_.gameObject.transform.parent = null;
+                    //ステージから退避させる
+                    this.transform.position = GameObject.Find("tempPos").gameObject.transform.position;
+                    
                 });
 
             });
         }
     }
+    public void FindGM()
+    {
+        GM = GameObject.Find("GameManager");
+        VS_GM = GM.GetComponent<VS_GameManager>();
+    }
+    public void ResetStatus()
+    {
+        HP = MaxHP;
+        Energy = MaxEnergy;
+        HPbar.value = (float)HP / (float)MaxHP;
+        Energybar.value = (float)Energy / (float)MaxEnergy;
+        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+        {
+            spriteRenderer.color = color;
+        }
+    }
+
+
 }

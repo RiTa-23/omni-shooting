@@ -3,7 +3,16 @@ guid: 9cce4b5499a039f4a8c7969f17a4c06a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - spawnPos: {instanceID: 0}
+  - spawnEffect: {instanceID: 0}
+  - frontCanvas: {instanceID: 0}
+  - spawnSE: {fileID: 8300000, guid: 234b4cff937ed7244a9c6f78402f3652, type: 3}
+  - readySE: {fileID: 8300000, guid: 82565426b83c2bf49a8d0e947af91b63, type: 3}
+  - goSE: {fileID: 8300000, guid: 5b2b52539daedd249961cbf62296a2f9, type: 3}
+  - winnerSE: {fileID: 8300000, guid: 65c11de165ea5a443a276c16e30b3865, type: 3}
+  - resultSE: {fileID: 8300000, guid: bacec3f9befaaa34cb4af728646ce908, type: 3}
+  - BGM: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

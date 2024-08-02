@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,10 +12,8 @@ using static UnityEngine.GraphicsBuffer;
 public class VS_GameManager : MonoBehaviour
 {
     //スポーン地点
-    [SerializeField] GameObject spawnPos;
-    private GameObject spawn1;//左上
-    private GameObject spawn2;//右下
-    private GameObject tempPos;
+    [SerializeField] Vector2 spawnsize;
+    [SerializeField] GameObject tempPos;
     [SerializeField] GameObject spawnEffect;
     //プレイヤーオブジェクト
     public GameObject[] p;
@@ -26,37 +25,49 @@ public class VS_GameManager : MonoBehaviour
     [SerializeField] AudioClip spawnSE;
     [SerializeField] AudioClip readySE;
     [SerializeField] AudioClip goSE;
+    [SerializeField] AudioClip winnerSE;
+    [SerializeField] AudioClip resultSE;
     [SerializeField] AudioSource BGM;
 
     //プレイヤー人数
     int playerNum;
+    public int aliveNum;//生き残りの数
+    public bool[] isDead;//脱落したか
 
     //リザルト用
     public int[] killNum;//倒した敵の数
     public int[] giveDamage;//敵に与えたダメージ量
     public int[] Rank;//何位か
+    public bool isResultWait=false;//リザルト待機画面中か
+    public bool[] isResultOk;//リザルト確認
 
     // Start is called before the first frame update
     void Start()
     {
+        //初期化
         BGM.Stop();
-        spawn1 = spawnPos.transform.Find("1").gameObject;
-        spawn2 = spawnPos.transform.Find("2").gameObject;
-        tempPos = spawnPos.transform.Find("tempPos").gameObject;
+        tempPos = GameObject.Find("tempPos").gameObject;
         audioSource=GetComponent<AudioSource>();
 
         p = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("プレイヤー人数" + p.Length);
         playerNum = p.Length;
+        aliveNum = playerNum;
 
         killNum=new int[playerNum];
         giveDamage = new int[playerNum];
         Rank = new int[playerNum];
+        isDead = new bool[playerNum];
+        isResultOk = new bool[playerNum];
 
-        //一時的にプレイヤーをステージ外に退避
-        for(int i = 0; i < p.Length; i++)
+        for(int i = 0; i < playerNum; i++)
         {
+            isDead[i] = false;
+            isResultOk[i] = false;
+            //一時的にプレイヤーをステージ外に退避
             p[i].transform.position = tempPos.transform.position;
+            //PlayerStatusの変数GMを格納
+            p[i].GetComponent<PlayerStatus>().FindGM();
         }
         //ランダムな位置にプレイヤーをスポーン
         StartCoroutine(spawnPlayer());
@@ -66,11 +77,34 @@ public class VS_GameManager : MonoBehaviour
     }
     IEnumerator spawnPlayer()
     {
-        for (int i = 0; i < p.Length; i++)
+        Vector3[] temp_playerpos = new Vector3[playerNum];
+        for (int i = 0; i < playerNum; i++)
         {
-            //ランダムスポーン
-            float x = Random.Range(spawn1.transform.position.x, spawn2.transform.position.x);
-            float y = Random.Range(spawn2.transform.position.y, spawn1.transform.rotation.y);
+            float x=0, y=0;
+            //ポジションチェック
+            bool isPosBad = true;
+
+            while (isPosBad)
+            {
+                //ランダムスポーン
+                x = Random.Range(-spawnsize.x, spawnsize.x);
+                y = Random.Range(-spawnsize.y, spawnsize.y);
+
+                isPosBad = false;
+                for (int j = 0; j < i; j++)
+                {
+                    //他のプレイヤーとの距離が近すぎる場合はもう一度
+                    if ((temp_playerpos[j] - new Vector3(x, y, 0)).magnitude < 6)
+                    {
+                        print("再配置");
+                        yield return new WaitForSeconds(0.0001f);
+                        isPosBad = true;
+                        break;
+                    }
+                }
+            }
+
+            temp_playerpos[i] = new Vector3(x, y, 0);
             Instantiate(spawnEffect, new Vector3(x, y, 0), Quaternion.identity);
             audioSource.PlayOneShot(spawnSE);
             yield return new WaitForSeconds(0.25f);
@@ -84,7 +118,7 @@ public class VS_GameManager : MonoBehaviour
         GameObject go = frontCanvas.transform.Find("Go").gameObject;
 
         //スポーン待機
-        yield return new WaitForSeconds(0.25f*(p.Length+1));
+        yield return new WaitForSeconds(0.25f*(playerNum+1));
 
         //ReadyGoエフェクト
         ready.SetActive(true);
@@ -97,10 +131,9 @@ public class VS_GameManager : MonoBehaviour
         audioSource.PlayOneShot(goSE);
         
         //操作許可をtrue
-        for (int i = 0; i < p.Length; i++)
+        for (int i = 0; i < playerNum; i++)
         {
-            p[i].GetComponent<PlayerController>().isControllOk = true;
-            p[i].GetComponent<PlayerController>().isFireOk = true;
+            p[i].GetComponent<PlayerController>().AllControllArrow(true,true);
         }
 
         yield return new WaitForSeconds(0.5f);
@@ -112,36 +145,53 @@ public class VS_GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        p = GameObject.FindGameObjectsWithTag("Player");
-
         //プレイヤー数が１以下になったらResultに移行
-        if (p.Length <= 1&&!isResult)
+        if (aliveNum <= 1&&!isResult)
         {
             isResult = true;
             StartCoroutine(Result());
         }
+
+        //デバッグ用
+        if(p.Length==0)
+            SceneManager.LoadScene("LobbyScene");
     }
     IEnumerator Result()
     {
         GameObject result = frontCanvas.transform.Find("Result").gameObject;
+        BGM.Stop();
         yield return new WaitForSeconds(0.5f);
-        if (p.Length == 1)
+        if (aliveNum == 1)
         {
             //〇P Win!的なのを出す + Result
             GameObject winner = result.transform.Find("winner").gameObject;
-            int winnerNum = p[0].GetComponent<PlayerStatus>().P_Num;
+
+            //生き残ったプレイヤーを特定
+            int winnerNum=-1;
+            for(int i=0;i<p.Length;i++)
+            {
+                if(!isDead[i])
+                {
+                    winnerNum = i;
+                }
+            }
             //winnerのランクを1にする
             Rank[winnerNum] = 1;
 
+            //wins!のエフェクト
             winner.GetComponent<Text>().text =(winnerNum+1)+"P Wins!";
+            audioSource.PlayOneShot(winnerSE);
             winner.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             winner.SetActive(true);
 
             yield return new WaitForSeconds(3);
 
-            //生き残ってるプレイヤーオブジェクトを削除
-            if (p.Length!=0)
-            Destroy(p[0].transform.parent.gameObject);
+            //生き残ってるプレイヤーオブジェクトを操作不可、退避
+            if (aliveNum !=0)
+            {
+                p[winnerNum].GetComponent<PlayerController>().AllControllArrow(false,false);
+                p[winnerNum].transform.position=tempPos.transform.position;
+            }
 
             //上に移動
             winner.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 150), 2f)
@@ -163,6 +213,7 @@ public class VS_GameManager : MonoBehaviour
         //resultを出す
         GameObject resultPanel = result.transform.Find("resultPanel").gameObject;
         resultPanel.SetActive(true);
+        audioSource.PlayOneShot(resultSE);
         resultPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 57), 1f)
 .SetEase(Ease.OutBack);
 
@@ -193,18 +244,35 @@ public class VS_GameManager : MonoBehaviour
                 case 3: Ranktext = "3rd"; break;
                 case 4: Ranktext = "4th"; break;
             }
-            pP[i].transform.Find("Rank").GetComponent<Text>().text = (i + 1) + "P - " + Ranktext;
-            pP[i].transform.Find("killNum").GetComponent<Text>().text = "撃破 : " + killNum[i];
-            pP[i].transform.Find("giveDamage").GetComponent<Text>().text = "与ダメ : " + giveDamage[i];
+            pP[i].transform.Find("Rank").GetComponent<Text>().text = Ranktext+ " - " + (i+1)+"P";
+            pP[i].transform.Find("killNum").GetComponent<Text>().text = "Kill : " + killNum[i];
+            pP[i].transform.Find("giveDamage").GetComponent<Text>().text = "Attack : " + giveDamage[i];
             pP[i].SetActive(true);
         }
         //プレイヤーパネル移動
         playerPanels.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, -105), 1f)
 .SetEase(Ease.OutBack);
-        yield return new WaitForSeconds(7);
 
-        //ボタンが押されたらロビーに戻る
+        //全員の右ボタンが押されたらロビーに戻る
+        isResultWait = true;
 
+        bool isResultAllOk = false;
+        while (!isResultAllOk)
+        {
+            for(int i = 0; i < playerNum; i++)
+            {
+                if(isResultOk[i]==false)
+                {
+                    break;
+                }
+                else if(i==playerNum-1)
+                {
+                    isResultAllOk=true;
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
         SceneManager.LoadScene("LobbyScene");
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip shootSE;
     [SerializeField] AudioClip dodgeSE;
+    [SerializeField] AudioClip enterSE;
+    [SerializeField] AudioClip cancelSE;
     //effect
     [SerializeField] ParticleSystem dodgeEffect;
 
@@ -68,7 +71,7 @@ public class PlayerController : MonoBehaviour
         if (isControllOk)
         {
             movementValue_ = movementValue.Get<Vector2>();//ブースト用
-            rb.AddForce(movementValue_ * 20);
+            rb.AddForce(movementValue_ * 7);
         }
         
     }
@@ -95,8 +98,7 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(movementValue_ * 1000);
                 audioSource.PlayOneShot(dodgeSE);
                 Instantiate(dodgeEffect, this.transform.position, Quaternion.identity, this.transform);
-                playerStatus.Energy -= dodgeEnergy;
-                playerStatus.EnergyUpdate();
+                playerStatus.EnergyUpdate(-dodgeEnergy);
             }
         }
     }
@@ -110,8 +112,7 @@ public class PlayerController : MonoBehaviour
                 bulletPoint = transform.Find("bulletPoint").transform.position;
                 GameObject bullet = Instantiate(bulletPrefab, bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
                 audioSource.PlayOneShot(shootSE);
-                playerStatus.Energy -= fireEnergy;
-                playerStatus.EnergyUpdate();
+                playerStatus.EnergyUpdate(-fireEnergy);
 
                 bulletStatus bulletStatus_;
                 bulletStatus_ = bullet.GetComponent<bulletStatus>();
@@ -124,7 +125,8 @@ public class PlayerController : MonoBehaviour
                 Destroy(bullet, bulletLostTime);
             }
         }
-        else
+        //ロビーにいるとき
+        if (SceneManager.GetActiveScene().name == "LobbyScene")
         {
             //準備完了
             if (!ready)
@@ -133,6 +135,23 @@ public class PlayerController : MonoBehaviour
             }
         }
         
+    }
+    private void OnEnter()
+    {
+        print("右ボタン押されたよ");
+        var VS_GM = playerStatus.VS_GM;
+        //result画面の時
+        if(VS_GM!=null)
+        {
+            //リザルト確認処理
+            if (VS_GM.isResultWait&&!VS_GM.isResultOk[playerStatus.P_Num])
+            {
+                print("resultOk!");
+                VS_GM.isResultOk[playerStatus.P_Num] = true;
+                audioSource.PlayOneShot(enterSE);
+            }
+        }    
+
     }
 
     // Update is called once per frame
@@ -143,5 +162,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity *=0.95f;
         }
+    }
+
+    //全コントロール許可制御
+    public void AllControllArrow(bool controllOk,bool fireOk)
+    {
+        isControllOk = controllOk;
+        isFireOk = fireOk;
     }
 }

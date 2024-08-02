@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
@@ -11,9 +12,25 @@ public class LobbyManager : MonoBehaviour
     //SE
     AudioSource audioSource;
     [SerializeField] AudioClip ReadySE;
+
+    [SerializeField]GameObject playerInputManager;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        //Playerの初期化
+        GameObject[] p = GameObject.FindGameObjectsWithTag("Player");
+        for(int i=0; i<p.Length; i++)
+        {
+            //位置を戻す
+            p[i].transform.position = Vector3.zero;
+            //操作可能にする
+            p[i].GetComponent<PlayerController>().AllControllArrow(true,false);
+            //readyの状態をfalseにする
+            p[i].GetComponent<PlayerController>().ready = false;
+            //HPとEnergy全回復
+            p[i].GetComponent<PlayerStatus>().ResetStatus();
+
+        }
     }
 
     // Update is called once per frame
@@ -21,6 +38,18 @@ public class LobbyManager : MonoBehaviour
     {
         GameObject[] p = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("プレイヤー人数"+p.Length);
+
+        //playerInputManagerのアクティブ・非アクティブ制御
+        //プレイヤーが四人以上なら非アクティブにする
+        if(p.Length==4&&playerInputManager.activeSelf)
+        {
+            playerInputManager.SetActive(false);
+        }
+        else if(p.Length<4&&!playerInputManager.activeSelf)
+        {
+            playerInputManager.SetActive(true);
+        }
+
         for(int i=0; i<p.Length; i++)
         {
             //playerBordが非アクティブならアクティブにする
