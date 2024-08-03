@@ -160,6 +160,7 @@ public class VS_GameManager : MonoBehaviour
     {
         GameObject result = frontCanvas.transform.Find("Result").gameObject;
         BGM.Stop();
+        string winnerColor="";
         yield return new WaitForSeconds(0.5f);
         if (aliveNum == 1)
         {
@@ -179,7 +180,8 @@ public class VS_GameManager : MonoBehaviour
             Rank[winnerNum] = 1;
 
             //wins!のエフェクト
-            winner.GetComponent<Text>().text =(winnerNum+1)+"P Wins!";
+            winnerColor = p[winnerNum].GetComponent<PlayerStatus>().colorCode;
+            winner.GetComponent<Text>().text ="<color="+winnerColor+">"+(winnerNum+1)+"P</color> Wins!";
             audioSource.PlayOneShot(winnerSE);
             winner.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             winner.SetActive(true);
@@ -194,7 +196,7 @@ public class VS_GameManager : MonoBehaviour
             }
 
             //上に移動
-            winner.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 150), 2f)
+            winner.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 170), 2f)
     .SetEase(Ease.OutBack);
             yield return new WaitForSeconds(2);
         }
@@ -205,7 +207,7 @@ public class VS_GameManager : MonoBehaviour
             Draw.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             Draw.SetActive(true);
             //上に移動
-            Draw.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 150), 2f)
+            Draw.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 170), 2f)
     .SetEase(Ease.OutBack);
             yield return new WaitForSeconds(2);
         }
@@ -214,7 +216,7 @@ public class VS_GameManager : MonoBehaviour
         GameObject resultPanel = result.transform.Find("resultPanel").gameObject;
         resultPanel.SetActive(true);
         audioSource.PlayOneShot(resultSE);
-        resultPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 57), 1f)
+        resultPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 70), 1f)
 .SetEase(Ease.OutBack);
 
         GameObject playerPanels = result.transform.Find("playerPanels").gameObject;
@@ -236,17 +238,27 @@ public class VS_GameManager : MonoBehaviour
         //プレイヤーパネル内のテキスト書き換え
         for (int i = 0; i < pP.Length; i++)
         {
-            string Ranktext = "";
-            switch (Rank[i])
+            GameObject resultStatus = pP[i].transform.Find("resultStatus").gameObject;
+
+            //Rankのマークをつける
+            GameObject rank = pP[i].transform.Find("Rank").gameObject;
+            if(Rank[i]<4)
             {
-                case 1: Ranktext = "1st"; break;
-                case 2: Ranktext = "2nd"; break;
-                case 3: Ranktext = "3rd"; break;
-                case 4: Ranktext = "4th"; break;
+                rank.transform.Find(Rank[i].ToString()).gameObject.SetActive(true);
             }
-            pP[i].transform.Find("Rank").GetComponent<Text>().text = Ranktext+ " - " + (i+1)+"P";
-            pP[i].transform.Find("killNum").GetComponent<Text>().text = "Kill : " + killNum[i];
-            pP[i].transform.Find("giveDamage").GetComponent<Text>().text = "Attack : " + giveDamage[i];
+
+
+            GameObject killNum_ = resultStatus.transform.Find("killNum").gameObject;
+            GameObject giveDamage_ = resultStatus.transform.Find("giveDamage").gameObject;
+
+            killNum_.GetComponent<Text>().text = "Kill : " + killNum[i];
+            giveDamage_.GetComponent<Text>().text = "Attack : " + giveDamage[i];
+
+            if (UnityEngine.ColorUtility.TryParseHtmlString(p[i].GetComponent<PlayerStatus>().colorCode, out Color color))
+            {
+                killNum_.GetComponent<Text>().color = color;
+                giveDamage_.GetComponent<Text>().color = color;
+            }         
             pP[i].SetActive(true);
         }
         //プレイヤーパネル移動
@@ -259,13 +271,21 @@ public class VS_GameManager : MonoBehaviour
         bool isResultAllOk = false;
         while (!isResultAllOk)
         {
+            int ResultOkNum = 0;
             for(int i = 0; i < playerNum; i++)
             {
-                if(isResultOk[i]==false)
+                if (isResultOk[i])
                 {
-                    break;
+                    ResultOkNum++;
+                    //リザルト確認OK!の処理
+                    if (!pP[i].transform.Find("OK!").gameObject.activeSelf)
+                    {
+                        pP[i].transform.Find("pullRight").gameObject.SetActive(false);
+                        pP[i].transform.Find("OK!").gameObject.SetActive(true);
+                    }
                 }
-                else if(i==playerNum-1)
+                
+                if(ResultOkNum==playerNum)
                 {
                     isResultAllOk=true;
                     break;

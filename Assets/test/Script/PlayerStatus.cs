@@ -34,7 +34,7 @@ public class PlayerStatus : MonoBehaviour
     //エネルギー自然回復量
     public float energyNaturalRecovery=0.12f;
     //カラーコード
-    string colorCode;
+    public string colorCode;
     //VS_GameManager
     GameObject GM;
     public VS_GameManager VS_GM;
