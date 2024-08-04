@@ -34,8 +34,6 @@ public class PlayerController : MonoBehaviour
     public int dodgeEnergy=12;
     //ファイアエネルギー消費量
     public int fireEnergy=10;
-    //準備完了
-    public bool ready = false;
 
     //SE&BGM
     AudioSource audioSource;
@@ -45,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip cancelSE;
     //effect
     [SerializeField] ParticleSystem dodgeEffect;
+    public LobbyManager lobbyManager;
 
     //ベクトルから角度を求める
     public static float Vector2ToAngle(Vector2 vector)
@@ -63,6 +62,7 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         audioSource = GetComponent<AudioSource>();
         playerStatus = GetComponent<PlayerStatus>();
+        lobbyManager=GameObject.Find("LobbyManager").gameObject.GetComponent<LobbyManager>();
     }
     private void OnMove(InputValue movementValue)
     {
@@ -129,9 +129,9 @@ public class PlayerController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "LobbyScene")
         {
             //準備完了
-            if (!ready)
+            if (lobbyManager != null && !lobbyManager.ready[playerStatus.P_Num])
             {
-                ready = true;
+                lobbyManager.ready[playerStatus.P_Num] = true;
             }
         }
         
@@ -152,6 +152,10 @@ public class PlayerController : MonoBehaviour
             }
         }    
 
+    }
+    private void OnCancel()
+    {
+        //ロビー退室
     }
 
     // Update is called once per frame

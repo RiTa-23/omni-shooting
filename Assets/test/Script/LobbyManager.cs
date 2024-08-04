@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
 {
-    bool[] ready=new bool[4];
+    public bool[] ready=new bool[4];
     int readyNum = 0;
     [SerializeField] GameObject[] playerBord=new GameObject[4];
     //SE
@@ -25,10 +25,10 @@ public class LobbyManager : MonoBehaviour
             p[i].transform.position = Vector3.zero;
             //操作可能にする
             p[i].GetComponent<PlayerController>().AllControllArrow(true,false);
-            //readyの状態をfalseにする
-            p[i].GetComponent<PlayerController>().ready = false;
             //HPとEnergy全回復
             p[i].GetComponent<PlayerStatus>().ResetStatus();
+            //LobbyManager代入
+            p[i].GetComponent<PlayerController>().lobbyManager = this;
 
         }
     }
@@ -57,7 +57,6 @@ public class LobbyManager : MonoBehaviour
             {
                 playerBord[i].SetActive(true);
             }
-            ready[i]=p[i].GetComponent<PlayerController>().ready;
 
             //readyがtrueかつplayerBordのReadyがfalseなら（最初の一回だけ行う準備完了の処理）
             if (ready[i]&&!playerBord[i].transform.Find("Ready").gameObject.activeSelf)
