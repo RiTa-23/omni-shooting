@@ -29,6 +29,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] ParticleSystem hitEffect;
     //ステータスバー
     [SerializeField]Slider HPbar;
+    [SerializeField] Image HPbar_img;
     [SerializeField]Slider Energybar;
     private SpriteRenderer spriteRenderer;
     //エネルギー自然回復量
@@ -112,7 +113,7 @@ public class PlayerStatus : MonoBehaviour
         {
             Energy = MaxEnergy;
         }
-        Energybar.value = (float)Energy / (float)MaxEnergy;
+        Energybar.DOValue((float)Energy / (float)MaxEnergy,0.5f);
     }
     public void HPUpdate(int recoveryAmount)
     {
@@ -121,7 +122,22 @@ public class PlayerStatus : MonoBehaviour
         {
             HP = MaxHP;
         }
-        HPbar.value = (float)HP / (float)MaxHP;
+        //HPの割合
+        float HPrate = (float)HP / (float)MaxHP;
+        //HPバーの色変化
+        if(HPrate<0.25)
+        {
+            HPbar_img.color = Color.red;
+        }
+        else if(HPrate<0.5)
+        {
+            HPbar_img.color = Color.yellow;
+        }
+        else
+        {
+            HPbar_img.color = Color.green;
+        }
+        HPbar.DOValue(HPrate, 0.5f);
     }
 
     void Update()
@@ -152,6 +168,8 @@ public class PlayerStatus : MonoBehaviour
                     deadEffect_.gameObject.transform.parent = null;
                     //ステージから退避させる
                     this.transform.position = GameObject.Find("tempPos").gameObject.transform.position;
+                    //色を戻す
+                    ResetPlayer();
                     
                 });
 
@@ -182,6 +200,7 @@ public class PlayerStatus : MonoBehaviour
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;
         Energybar.value = (float)Energy / (float)MaxEnergy;
+        HPbar_img.color = Color.green;
     }
 
 

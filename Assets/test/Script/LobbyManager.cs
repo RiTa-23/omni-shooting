@@ -102,10 +102,9 @@ public class LobbyManager : MonoBehaviour
             {
                 DontDestroyOnLoad(p[i].transform.parent);
                 p[i].GetComponent<PlayerController>().isControllOk = false;
-                //体力、速度を初期化
+                //ステータス、速度を初期化
                 p[i].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-                var playerStatus = p[i].GetComponent<PlayerStatus>();
-                playerStatus.Energy = playerStatus.MaxEnergy;
+                p[i].GetComponent<PlayerStatus>().ResetStatus();
             }
             StartCoroutine(LoadScene());
         }

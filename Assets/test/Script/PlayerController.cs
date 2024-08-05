@@ -12,8 +12,10 @@ public class PlayerController : MonoBehaviour
     //入力を受け取るPlayerInput
     private PlayerInput playerInput;
     private PlayerStatus playerStatus;
-    //移動速度
-    [SerializeField] float speed;
+    //移動時に加える力
+    public float force=7;
+    //移動速度上限
+    public float maxSpeed = 10;
     //移動入力方向
     private Vector2 movementValue_;
     private Vector2 LookValue_;
@@ -71,7 +73,7 @@ public class PlayerController : MonoBehaviour
         if (isControllOk)
         {
             movementValue_ = movementValue.Get<Vector2>();//ブースト用
-            rb.AddForce(movementValue_ * 7);
+            rb.AddForce(movementValue_ * force);
         }
         
     }
@@ -171,7 +173,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //一定速度以上なら減速
-        if (rb.velocity.magnitude > speed)
+        if (rb.velocity.magnitude > maxSpeed)
         {
             rb.velocity *=0.95f;
         }
