@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -99,6 +101,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.AddForce(movementValue_ * 1000);
                 audioSource.PlayOneShot(dodgeSE);
+                StartCoroutine(vibration(0.6f, 0.6f, 0.2f));
                 Instantiate(dodgeEffect, this.transform.position, Quaternion.identity, this.transform);
                 playerStatus.EnergyUpdate(-dodgeEnergy);
             }
@@ -114,6 +117,7 @@ public class PlayerController : MonoBehaviour
                 bulletPoint = transform.Find("bulletPoint").transform.position;
                 GameObject bullet = Instantiate(bulletPrefab, bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
                 audioSource.PlayOneShot(shootSE);
+                StartCoroutine(vibration(0.5f, 0.5f, 0.1f));
                 playerStatus.EnergyUpdate(-fireEnergy);
 
                 bulletStatus bulletStatus_;
@@ -134,6 +138,7 @@ public class PlayerController : MonoBehaviour
             if (lobbyManager != null && !lobbyManager.ready[playerStatus.P_Num])
             {
                 lobbyManager.ready[playerStatus.P_Num] = true;
+                StartCoroutine(vibration(0.7f, 0.7f, 0.2f));
             }
         }
         
@@ -184,5 +189,30 @@ public class PlayerController : MonoBehaviour
     {
         isControllOk = controllOk;
         isFireOk = fireOk;
+    }
+
+    //振動機能
+    int vibDuplication = 0;//重複数
+    public IEnumerator vibration(float left, float right, float seconds)
+    {
+        // PlayerInputから振動可能なデバイス取得
+        // playerInput.devicesは現在選択されているスキームのデバイス一覧であることに注意
+        if (playerInput.devices.FirstOrDefault(x => x is IDualMotorRumble) is not IDualMotorRumble gamepad)
+        {
+            Debug.Log("デバイス未接続");
+            yield break;
+        }
+        vibDuplication++;
+        //振動開始
+        gamepad.SetMotorSpeeds(left, right);
+
+        yield return new WaitForSeconds(seconds);
+
+        if (vibDuplication == 1)
+        {
+            //重複なしなら振動を止める
+            gamepad.SetMotorSpeeds(0, 0);
+        }
+        vibDuplication--;
     }
 }

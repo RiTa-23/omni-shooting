@@ -72,6 +72,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //弾に当たった時の処理
         if (collision.gameObject.CompareTag("bullet") && !VS_GM.isDead[P_Num])
         {
             bulletStatus bulletStatus_;
@@ -82,13 +83,18 @@ public class PlayerStatus : MonoBehaviour
             if (killeMeEnemy!= P_Num)
             {
                 HPUpdate(-bulletStatus_.Damage);
-
+                
                 //敵のリザルト調整
                 VS_GM.giveDamage[killeMeEnemy] += bulletStatus_.Damage;
                 //HPが0以下なら自分を倒した敵のキル数を加算
                 if (HP <= 0)
                 {
                     VS_GM.killNum[killeMeEnemy]++;
+                    StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
+                }
+                else
+                {
+                    StartCoroutine(playerController.vibration(0.8f, 0.8f, 0.2f));
                 }
                 //弾を消す
                 Destroy(collision);
