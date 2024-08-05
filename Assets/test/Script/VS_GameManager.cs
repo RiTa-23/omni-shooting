@@ -64,6 +64,8 @@ public class VS_GameManager : MonoBehaviour
         {
             isDead[i] = false;
             isResultOk[i] = false;
+            //ステータス、速度を初期化
+            p[i].GetComponent<PlayerStatus>().ResetStatus();
             //一時的にプレイヤーをステージ外に退避
             p[i].transform.position = tempPos.transform.position;
             //PlayerStatusの変数GMを格納
@@ -193,6 +195,8 @@ public class VS_GameManager : MonoBehaviour
             {
                 p[winnerNum].GetComponent<PlayerController>().AllControllArrow(false,false);
                 p[winnerNum].transform.position=tempPos.transform.position;
+                //速度を0にする
+                p[winnerNum].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             }
 
             //上に移動

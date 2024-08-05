@@ -16,7 +16,7 @@ public class LobbyManager : MonoBehaviour
     //SE
     AudioSource audioSource;
     [SerializeField] AudioClip ReadySE;
-    [SerializeField] AudioClip CancelSE;
+    [SerializeField] AudioClip ExitSE;
     //player
     GameObject[] p;
 
@@ -102,9 +102,6 @@ public class LobbyManager : MonoBehaviour
             {
                 DontDestroyOnLoad(p[i].transform.parent);
                 p[i].GetComponent<PlayerController>().isControllOk = false;
-                //ステータス、速度を初期化
-                p[i].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-                p[i].GetComponent<PlayerStatus>().ResetStatus();
             }
             StartCoroutine(LoadScene());
         }
@@ -127,7 +124,7 @@ public class LobbyManager : MonoBehaviour
     //退室
     public void ExitLobby(int playerNum)
     {
-        audioSource.PlayOneShot(CancelSE);
+        audioSource.PlayOneShot(ExitSE);
         //退室するプレイヤーを消去
         Destroy(p[playerNum].transform.parent.gameObject);
 

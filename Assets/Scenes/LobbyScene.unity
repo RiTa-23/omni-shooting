@@ -1119,7 +1119,7 @@ Transform:
   m_GameObject: {fileID: 838579382}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 4.38, y: 3.98, z: 0.023765799}
+  m_LocalPosition: {x: 4.38, y: 4, z: 0.023765799}
   m_LocalScale: {x: 1, y: 17.72, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2130,8 +2130,8 @@ MonoBehaviour:
   - {fileID: 816104651}
   - {fileID: 326507678}
   - {fileID: 1595427261}
-  ReadySE: {fileID: 8300000, guid: 29733314bf41e004981e669cda15f071, type: 3}
-  CancelSE: {fileID: 8300000, guid: 29733314bf41e004981e669cda15f071, type: 3}
+  ReadySE: {fileID: 8300000, guid: 05aa3e60e3e515942b761ad92376b665, type: 3}
+  ExitSE: {fileID: 8300000, guid: 03e93ccd5db002349ba6cf04f1c6ea1c, type: 3}
   playerInputManager: {fileID: 1992854286}
 --- !u!4 &1538339044
 Transform:
@@ -2372,7 +2372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 2
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0

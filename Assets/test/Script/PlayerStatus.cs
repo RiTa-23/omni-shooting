@@ -170,7 +170,9 @@ public class PlayerStatus : MonoBehaviour
                     this.transform.position = GameObject.Find("tempPos").gameObject.transform.position;
                     //色を戻す
                     ResetPlayer();
-                    
+                    //速度を0にする
+                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                                     
                 });
 
             });
@@ -201,7 +203,8 @@ public class PlayerStatus : MonoBehaviour
         HPbar.value = (float)HP / (float)MaxHP;
         Energybar.value = (float)Energy / (float)MaxEnergy;
         HPbar_img.color = Color.green;
+
+        //速度を0にする
+        this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
     }
-
-
 }
