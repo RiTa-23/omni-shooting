@@ -155,7 +155,16 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCancel()
     {
-        //ロビー退室
+        //ロビーにいるとき
+        if (SceneManager.GetActiveScene().name == "LobbyScene")
+        {
+            //AllReadyじゃないなら
+            if(!lobbyManager.isAllReady)
+            {
+                //ロビー退室
+                lobbyManager.ExitLobby(playerStatus.P_Num);
+            }
+        } 
     }
 
     // Update is called once per frame

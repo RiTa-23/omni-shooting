@@ -1,24 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
 {
+    //ready状態か
     public bool[] ready=new bool[4];
     int readyNum = 0;
+    public bool isAllReady = false;
+    //playerBord
     [SerializeField] GameObject[] playerBord=new GameObject[4];
     //SE
     AudioSource audioSource;
     [SerializeField] AudioClip ReadySE;
+    [SerializeField] AudioClip CancelSE;
+    //player
+    GameObject[] p;
 
     [SerializeField]GameObject playerInputManager;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         //Playerの初期化
-        GameObject[] p = GameObject.FindGameObjectsWithTag("Player");
+        p = GameObject.FindGameObjectsWithTag("Player");
         for(int i=0; i<p.Length; i++)
         {
             //位置を戻す
@@ -36,7 +43,7 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject[] p = GameObject.FindGameObjectsWithTag("Player");
+        p = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("プレイヤー人数"+p.Length);
 
         //playerInputManagerのアクティブ・非アクティブ制御
@@ -50,29 +57,47 @@ public class LobbyManager : MonoBehaviour
             playerInputManager.SetActive(true);
         }
 
-        for(int i=0; i<p.Length; i++)
+        //人数以上のplayerBordがあれば非アクティブにする
+        int pBactive = 0;
+        for(int i=0;i<4;i++)
+        {
+            if (playerBord[i].activeSelf)
+                pBactive++;
+        }
+        if(pBactive>p.Length)
+        {
+            for(int i=pBactive;i>p.Length;i--)
+            {
+                playerBord[i-1].SetActive(false);
+            }
+        }
+
+        for (int i=0; i<p.Length; i++)
         {
             //playerBordが非アクティブならアクティブにする
             if (!playerBord[i].activeSelf)
             {
                 playerBord[i].SetActive(true);
             }
-
-            //readyがtrueかつplayerBordのReadyがfalseなら（最初の一回だけ行う準備完了の処理）
+            //最初の一回だけ行う準備完了の処理
             if (ready[i]&&!playerBord[i].transform.Find("Ready").gameObject.activeSelf)
             {
                 print("プレイヤー" + i + "準備完了！");
                 audioSource.PlayOneShot(ReadySE);
                 readyNum++;
-                playerBord[i].transform.Find("stand-by").gameObject.SetActive(false);
-                playerBord[i].transform.Find("pull the triger").gameObject.SetActive(false);
-                playerBord[i].transform.Find("Ready").gameObject.SetActive(true);
+                ReadyOrStandby(playerBord[i],true);
+            }
+            //準備完了をオフにする（誰かが退室したときに実行される）
+            if (!ready[i]&& playerBord[i].transform.Find("Ready").gameObject.activeSelf)
+            {
+                ReadyOrStandby(playerBord[i], false);
             }
         }
 
         //プレイヤー全員が準備完了ならステージに移動させる
         if(readyNum==p.Length&&readyNum>1)
         {
+            isAllReady = true;
             for(int i=0; i<p.Length;i++)
             {
                 DontDestroyOnLoad(p[i].transform.parent);
@@ -88,7 +113,40 @@ public class LobbyManager : MonoBehaviour
     //時間差でシーンを読み込む
     IEnumerator LoadScene()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("vs_stage");
+    }
+
+    //Readyまたはstandby状態に変化したときの処理（trueならReady）
+    void ReadyOrStandby(GameObject playerBord,bool isReady)
+    {
+        playerBord.transform.Find("pull the triger").gameObject.SetActive(!isReady);
+        playerBord.transform.Find("stand-by").gameObject.SetActive(!isReady);
+        playerBord.transform.Find("Ready").gameObject.SetActive(isReady);
+    }
+
+    //退室
+    public void ExitLobby(int playerNum)
+    {
+        audioSource.PlayOneShot(CancelSE);
+        //退室するプレイヤーを消去
+        Destroy(p[playerNum].transform.parent.gameObject);
+
+        //プレイヤーのリセット
+        p = GameObject.FindGameObjectsWithTag("Player");
+        for(int i=0; i<p.Length;i++)
+        {
+            if (i!=playerNum)
+            p[i].GetComponent<PlayerStatus>().ResetPlayer();
+
+        }
+
+        //readyのリセット
+        for(int i=0;i<4;i++)
+        {
+            ready[i] = false;
+        }
+        readyNum = 0;
+
     }
 }

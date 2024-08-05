@@ -17,7 +17,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField]public int MaxEnergy=100;
 
     public PlayerInput playerInput;
-    public int P_Num;//プレイヤー番号（初期のplayerInput.user.indexの値）
+    public int P_Num;//プレイヤー識別番号
 
     //SE&BGM
     AudioSource audioSource;
@@ -41,8 +41,14 @@ public class PlayerStatus : MonoBehaviour
     //PlayerController
     PlayerController playerController;
 
-
-
+    //カラーコード
+    string[] P_color =
+    {
+        "#FF00F3",
+        "#00FFFD",
+        "#EDFF00",
+        "#5DFF00"
+    };
 
     private void Start()
     {
@@ -52,34 +58,14 @@ public class PlayerStatus : MonoBehaviour
 
         playerController=gameObject.GetComponent<PlayerController>();
 
-        P_Num = playerInput.user.index;
+        //ステータス初期化
+        ResetStatus();
+        //プレイヤー識別番号、色の割り当て
+        ResetPlayer();
+
         print($"プレイヤー#{P_Num}が入室");
         audioSource.PlayOneShot(enterSE);
 
-        //カラーコード
-        var oneP_color = "#FF00F3";
-        //var oneP_color = "#AD00FF";
-        var twoP_color = "#00FFFD";
-        /*var threeP_color = "#B4FF00";*/
-        var threeP_color="#EDFF00";
-        var fourP_color = "#5DFF00";
-
-        //プレイヤーごとに見た目を変える
-        switch (playerInput.user.index)
-        {
-            case 0: 
-                colorCode = oneP_color;break;
-            case 1:
-                colorCode= twoP_color;break;
-            case 2: 
-                colorCode= threeP_color;break;
-            case 3: 
-                colorCode= fourP_color;break;
-        }
-        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-        {
-            spriteRenderer.color = color;
-        }
 
     }
 
@@ -177,16 +163,25 @@ public class PlayerStatus : MonoBehaviour
         GM = GameObject.Find("GameManager");
         VS_GM = GM.GetComponent<VS_GameManager>();
     }
+    //プレイヤー識別番号、色の割り当て
+    public void ResetPlayer()
+    {
+        P_Num = playerInput.user.index;
+
+        //プレイヤーごとに見た目を変える
+        colorCode = P_color[P_Num];
+        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+        {
+            spriteRenderer.color = color;
+        }
+    }
+    //ステータス初期化
     public void ResetStatus()
     {
         HP = MaxHP;
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;
         Energybar.value = (float)Energy / (float)MaxEnergy;
-        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-        {
-            spriteRenderer.color = color;
-        }
     }
 
 

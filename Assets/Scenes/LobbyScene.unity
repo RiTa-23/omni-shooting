@@ -2123,12 +2123,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016d7de605495e740b35406e6d59ec1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ready: 00000000
+  isAllReady: 0
   playerBord:
   - {fileID: 1682761777}
   - {fileID: 816104651}
   - {fileID: 326507678}
   - {fileID: 1595427261}
-  ReadySE: {fileID: 8300000, guid: 05aa3e60e3e515942b761ad92376b665, type: 3}
+  ReadySE: {fileID: 8300000, guid: 29733314bf41e004981e669cda15f071, type: 3}
+  CancelSE: {fileID: 8300000, guid: 29733314bf41e004981e669cda15f071, type: 3}
   playerInputManager: {fileID: 1992854286}
 --- !u!4 &1538339044
 Transform:
