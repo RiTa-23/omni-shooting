@@ -64,6 +64,10 @@ public class PlayerStatus : MonoBehaviour
         //プレイヤー識別番号、色の割り当て
         ResetPlayer();
 
+        //プレイヤーが上限以上なら削除
+        if (P_Num > 3)
+            Destroy(gameObject.transform.parent.gameObject);
+
         print($"プレイヤー#{P_Num}が入室");
         audioSource.PlayOneShot(enterSE);
 

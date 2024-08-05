@@ -43,8 +43,7 @@ public class PlayerController : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip shootSE;
     [SerializeField] AudioClip dodgeSE;
-    [SerializeField] AudioClip enterSE;
-    [SerializeField] AudioClip cancelSE;
+    [SerializeField] AudioClip EnterSE;
     //effect
     [SerializeField] ParticleSystem dodgeEffect;
     public LobbyManager lobbyManager;
@@ -155,7 +154,7 @@ public class PlayerController : MonoBehaviour
             {
                 print("resultOk!");
                 VS_GM.isResultOk[playerStatus.P_Num] = true;
-                audioSource.PlayOneShot(enterSE);
+                audioSource.PlayOneShot(EnterSE);
             }
         }    
 

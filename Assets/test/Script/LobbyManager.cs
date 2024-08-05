@@ -46,17 +46,6 @@ public class LobbyManager : MonoBehaviour
         p = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("プレイヤー人数"+p.Length);
 
-        //playerInputManagerのアクティブ・非アクティブ制御
-        //プレイヤーが四人以上なら非アクティブにする
-        if(p.Length==4&&playerInputManager.activeSelf)
-        {
-            playerInputManager.SetActive(false);
-        }
-        else if(p.Length<4&&!playerInputManager.activeSelf)
-        {
-            playerInputManager.SetActive(true);
-        }
-
         //人数以上のplayerBordがあれば非アクティブにする
         int pBactive = 0;
         for(int i=0;i<4;i++)
