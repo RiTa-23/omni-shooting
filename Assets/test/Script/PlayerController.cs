@@ -167,7 +167,8 @@ public class PlayerController : MonoBehaviour
             //AllReadyじゃないなら
             if(!lobbyManager.isAllReady)
             {
-                //ロビー退室
+                //ロビー退室（振動止めておく）
+                StartCoroutine(vibration(0, 0, 0));
                 lobbyManager.ExitLobby(playerStatus.P_Num);
             }
         } 
