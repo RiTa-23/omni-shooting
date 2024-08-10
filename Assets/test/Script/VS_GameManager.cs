@@ -32,11 +32,10 @@ public class VS_GameManager : MonoBehaviour
     //プレイヤー人数
     int playerNum;
     public int aliveNum;//生き残りの数
-    public bool[] isDead;//脱落したか
 
     //リザルト用
     public int[] killNum;//倒した敵の数
-    public int[] giveDamage;//敵に与えたダメージ量
+    public float[] giveDamage;//敵に与えたダメージ量
     public int[] Rank;//何位か
     public bool isResultWait=false;//リザルト待機画面中か
     public bool[] isResultOk;//リザルト確認
@@ -55,14 +54,12 @@ public class VS_GameManager : MonoBehaviour
         aliveNum = playerNum;
 
         killNum=new int[playerNum];
-        giveDamage = new int[playerNum];
+        giveDamage = new float[playerNum];
         Rank = new int[playerNum];
-        isDead = new bool[playerNum];
         isResultOk = new bool[playerNum];
 
         for(int i = 0; i < playerNum; i++)
         {
-            isDead[i] = false;
             isResultOk[i] = false;
             //ステータス、速度を初期化
             p[i].GetComponent<PlayerStatus>().ResetStatus();
@@ -173,7 +170,7 @@ public class VS_GameManager : MonoBehaviour
             int winnerNum=-1;
             for(int i=0;i<p.Length;i++)
             {
-                if(!isDead[i])
+                if(!p[i].GetComponent<PlayerStatus>().isDead)
                 {
                     winnerNum = i;
                 }
@@ -256,7 +253,7 @@ public class VS_GameManager : MonoBehaviour
             GameObject giveDamage_ = resultStatus.transform.Find("giveDamage").gameObject;
 
             killNum_.GetComponent<Text>().text = "Kill : " + killNum[i];
-            giveDamage_.GetComponent<Text>().text = "Attack : " + giveDamage[i];
+            giveDamage_.GetComponent<Text>().text = "Attack : " + (int)giveDamage[i];
 
             if (UnityEngine.ColorUtility.TryParseHtmlString(p[i].GetComponent<PlayerStatus>().colorCode, out Color color))
             {

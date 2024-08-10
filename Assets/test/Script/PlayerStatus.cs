@@ -10,11 +10,12 @@ public class PlayerStatus : MonoBehaviour
 {
     // Start is called before the first frame update
     //ステータス
-    [SerializeField]public int HP;
+    [SerializeField]public float HP;
     [SerializeField]public float Energy;
 
     [SerializeField]public int MaxHP=100;
     [SerializeField]public int MaxEnergy=100;
+    public bool isDead=false;
 
     public PlayerInput playerInput;
     public int P_Num;//プレイヤー識別番号
@@ -74,10 +75,45 @@ public class PlayerStatus : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //ダメージ処理
+    public void DamageProcess(float damage,int owner)
+    {
+        if(!isDead)
+        {
+            HPUpdate(-damage);
+            //敵のリザルト調整
+            if (owner != P_Num)//敵に受けた攻撃なら
+            {
+                VS_GM.giveDamage[owner] += damage;
+                //HPが0以下なら自分を倒した敵のキル数を加算
+                if(HP<=0)
+                {
+                    VS_GM.killNum[owner]++;
+                    StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
+                }
+                else
+                {
+                    StartCoroutine(playerController.vibration(0.8f, 0.8f, 0.2f));
+                }
+            }
+            //hitEffect
+            Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
+            audioSource.PlayOneShot(hitSE);
+            gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
+            {
+                if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                {
+                    spriteRenderer.color = color;
+                }
+            });
+
+        }
+    }
+
+/*    private void OnTriggerEnter2D(Collider2D collision)
     {
         //弾に当たった時の処理
-        if (collision.gameObject.CompareTag("bullet") && !VS_GM.isDead[P_Num])
+        if (collision.gameObject.CompareTag("bullet") && !isDead)
         {
             bulletStatus bulletStatus_;
             bulletStatus_ = collision.GetComponent<bulletStatus>();
@@ -115,7 +151,7 @@ public class PlayerStatus : MonoBehaviour
                 });  
             }
         }
-    }
+    }*/
     public void EnergyUpdate(float recoveryAmount)
     {
         Energy += recoveryAmount;
@@ -125,7 +161,7 @@ public class PlayerStatus : MonoBehaviour
         }
         Energybar.DOValue((float)Energy / (float)MaxEnergy,0.5f);
     }
-    public void HPUpdate(int recoveryAmount)
+    public void HPUpdate(float recoveryAmount)
     {
         HP += recoveryAmount;
         if(HP>MaxHP)
@@ -158,10 +194,10 @@ public class PlayerStatus : MonoBehaviour
         }
 
         //脱落処理
-        if (HP <= 0 && !VS_GM.isDead[P_Num])
+        if (HP <= 0 && !isDead)
         {
             //isDeadをtrue、Rankに生き残っている数を代入→aliveNumを減らす
-            VS_GM.isDead[P_Num] = true;
+            isDead = true;
             VS_GM.Rank[P_Num] = VS_GM.aliveNum;
             VS_GM.aliveNum--;
             //操作不可にする
@@ -208,6 +244,7 @@ public class PlayerStatus : MonoBehaviour
     //ステータス初期化
     public void ResetStatus()
     {
+        isDead = false;
         HP = MaxHP;
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;
