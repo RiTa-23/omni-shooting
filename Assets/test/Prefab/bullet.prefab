@@ -173,3 +173,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 10
   Owner: 0
+  isTriggerDestroy: 1

@@ -927,9 +927,8 @@ MonoBehaviour:
   resultSE: {fileID: 8300000, guid: bacec3f9befaaa34cb4af728646ce908, type: 3}
   BGM: {fileID: 1956532959}
   aliveNum: 0
-  isDead: 
   killNum: 
-  giveDamage: 
+  giveDamage: []
   Rank: 
   isResultWait: 0
   isResultOk: 
