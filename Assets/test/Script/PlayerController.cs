@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip shootSE;
     [SerializeField] AudioClip dodgeSE;
     [SerializeField] AudioClip EnterSE;
+    [SerializeField] AudioClip bombSE;
     //effect
     [SerializeField] ParticleSystem dodgeEffect;
     public LobbyManager lobbyManager;
@@ -171,7 +172,7 @@ public class PlayerController : MonoBehaviour
             {
                 bulletPoint = transform.Find("bulletPoint").transform.position;
                 GameObject bomb = Instantiate(bombPrefab, bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
-                audioSource.PlayOneShot(shootSE);
+                audioSource.PlayOneShot(bombSE);
                 StartCoroutine(vibration(0.5f, 0.5f, 0.1f));
                 playerStatus.EnergyUpdate(-subEnergy);
 
