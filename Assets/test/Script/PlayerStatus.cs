@@ -10,7 +10,7 @@ public class PlayerStatus : MonoBehaviour
 {
     // Start is called before the first frame update
     //ステータス
-    [SerializeField]public float HP;
+    [SerializeField]float HP;
     [SerializeField]public float Energy;
 
     [SerializeField]public int MaxHP=100;
@@ -245,6 +245,9 @@ public class PlayerStatus : MonoBehaviour
     public void ResetStatus()
     {
         isDead = false;
+        MaxHP = 100;
+        MaxEnergy = 100;
+        energyNaturalRecovery = 0.12f;
         HP = MaxHP;
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     //入力を受け取るPlayerInput
     private PlayerInput playerInput;
     private PlayerStatus playerStatus;
-    //移動時に加える力
+    //移動時に加える力=スピード
     public float force=7;
     //移動速度上限
     public float maxSpeed = 10;
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     //インターバルか
     bool isFireInterval;
     //インターバルの時間
-    public float intervalTime=0.25f;
+    public float intervalTime=0.3f;
     //経過時間
     private float deltaTime=0;
 
@@ -67,6 +67,13 @@ public class PlayerController : MonoBehaviour
     //effect
     [SerializeField] ParticleSystem dodgeEffect;
     public LobbyManager lobbyManager;
+
+    public void ResetControllerStatus()
+    {
+        force = 7;
+        maxSpeed = 10;
+        intervalTime = 0.3f;
+    }
 
     //ベクトルから角度を求める
     public static float Vector2ToAngle(Vector2 vector)

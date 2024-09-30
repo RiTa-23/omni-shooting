@@ -63,6 +63,7 @@ public class VS_GameManager : MonoBehaviour
             isResultOk[i] = false;
             //ステータス、速度を初期化
             p[i].GetComponent<PlayerStatus>().ResetStatus();
+            p[i].GetComponent<PlayerController>().ResetControllerStatus();
             //一時的にプレイヤーをステージ外に退避
             p[i].transform.position = tempPos.transform.position;
             //PlayerStatusの変数GMを格納
