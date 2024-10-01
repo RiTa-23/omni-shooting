@@ -195,6 +195,7 @@ public class VS_GameManager : MonoBehaviour
     {
         GameObject result = frontCanvas.transform.Find("Result").gameObject;
         BGM.Stop();
+        isItemOn = false;
         string winnerColor="";
         yield return new WaitForSeconds(0.5f);
         if (aliveNum == 1)
