@@ -98,13 +98,13 @@ public class Item : MonoBehaviour
             //ÉAÉCÉeÉÄÇÃå¯â 
             switch (thisItemName)
             {
-                case ItemName.speedUp: playerController.force += 5; break;
-                case ItemName.maxSpeedUp: playerController.maxSpeed += 5; break;
-                case ItemName.maxEnergyUp: playerStatus.MaxEnergy += 30; break;
-                case ItemName.energyRecoverySpeedUp: playerStatus.energyNaturalRecovery += 0.05f; break;
+                case ItemName.speedUp: playerController.force += 2.5f; break;
+                case ItemName.maxSpeedUp: playerController.maxSpeed += 2; break;
+                case ItemName.maxEnergyUp: playerStatus.MaxEnergy += 20; break;
+                case ItemName.energyRecoverySpeedUp: playerStatus.energyNaturalRecovery += 0.04f; break;
                 case ItemName.rapidFireUp:
                     if (playerController.intervalTime > 0.02)
-                        playerController.intervalTime -= 0.02f; break;
+                        playerController.intervalTime -= 0.025f; break;
                 case ItemName.life: playerStatus.HPUpdate(20); break;
             }
             //è¡ñ≈Ç∑ÇÈ
