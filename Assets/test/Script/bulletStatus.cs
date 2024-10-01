@@ -34,7 +34,7 @@ public class bulletStatus : MonoBehaviour
                     Destroy(this.gameObject);
                 }
             }
-            else
+            else if(!collision.CompareTag("Item"))
             {
                 Destroy(this.gameObject);
             }
