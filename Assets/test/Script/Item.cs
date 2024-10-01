@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Search;
 using UnityEngine;
 
@@ -72,7 +73,7 @@ public class Item : MonoBehaviour
         
     }
 
-    enum ItemName
+    public enum ItemName
     {
         speedUp,//速度UP 15%
         maxSpeedUp,//最大速度UP（主にドッジで役立つ）15%
@@ -90,25 +91,39 @@ public class Item : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             GameObject player = collision.gameObject;
-            PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
-            PlayerController playerController = player.GetComponent<PlayerController>();
-            //効果音・エフェクト
-            AudioSource audioSource = player.GetComponent<AudioSource>();
-            audioSource.PlayOneShot(itemGetSE);
-            //アイテムの効果
-            switch (thisItemName)
+
+            //アイテム数が上限に達していない
+            //もしくはアイテムリストに存在しない（上限がない）ならアイテムを取得する
+            PlayerItem playerItem=player.GetComponent<PlayerItem>();
+            var ItemList = playerItem.ItemList;
+            if (!ItemList.ContainsKey(thisItemName) || ItemList[thisItemName]<10)
             {
-                case ItemName.speedUp: playerController.force += 2.5f; break;
-                case ItemName.maxSpeedUp: playerController.maxSpeed += 2; break;
-                case ItemName.maxEnergyUp: playerStatus.MaxEnergy += 20; break;
-                case ItemName.energyRecoverySpeedUp: playerStatus.energyNaturalRecovery += 0.04f; break;
-                case ItemName.rapidFireUp:
-                    if (playerController.intervalTime > 0.02)
-                        playerController.intervalTime -= 0.025f; break;
-                case ItemName.life: playerStatus.HPUpdate(20); break;
+                //アイテムリストに追加
+                if(ItemList.ContainsKey(thisItemName))
+                {
+                    playerItem.AddItem(thisItemName);
+                }
+
+                PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
+                PlayerController playerController = player.GetComponent<PlayerController>();
+                //効果音・エフェクト
+                AudioSource audioSource = player.GetComponent<AudioSource>();
+                audioSource.PlayOneShot(itemGetSE);
+                //アイテムの効果
+                switch (thisItemName)
+                {
+                    case ItemName.speedUp: playerController.force += 2.5f; break;
+                    case ItemName.maxSpeedUp: playerController.maxSpeed += 2; break;
+                    case ItemName.maxEnergyUp: playerStatus.MaxEnergy += 20; break;
+                    case ItemName.energyRecoverySpeedUp: playerStatus.energyNaturalRecovery += 0.04f; break;
+                    case ItemName.rapidFireUp:
+                        if (playerController.intervalTime > 0.02)
+                            playerController.intervalTime -= 0.025f; break;
+                    case ItemName.life: playerStatus.HPUpdate(20); break;
+                }
+                //消滅する
+                Destroy(gameObject);
             }
-            //消滅する
-            Destroy(gameObject);
         }
     }
 }

@@ -36,6 +36,10 @@ public class LobbyManager : MonoBehaviour
             p[i].GetComponent<PlayerStatus>().ResetStatus();
             //LobbyManager代入
             p[i].GetComponent<PlayerController>().lobbyManager = this;
+            //PlayerControllerステータスも初期化
+            p[i].GetComponent<PlayerController>().ResetControllerStatus();
+            //ItemListの初期化
+            p[i].GetComponent<PlayerItem>().ResetItemList();
 
         }
     }
