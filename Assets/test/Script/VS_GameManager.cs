@@ -15,6 +15,12 @@ public class VS_GameManager : MonoBehaviour
     [SerializeField] Vector2 spawnsize;
     [SerializeField] GameObject tempPos;
     [SerializeField] GameObject spawnEffect;
+    //アイテム
+    [SerializeField] GameObject ItemPrefab;
+    public bool isItemOn=true;//アイテムありか
+    [SerializeField]float spawnItemTime = 10;
+    float spawnDeltaTime = 0;
+    bool isSpawnItem;
     //プレイヤーオブジェクト
     public GameObject[] p;
     //Canvas
@@ -74,6 +80,15 @@ public class VS_GameManager : MonoBehaviour
         //ゲーム開始
         StartCoroutine(ReadyGo());
 
+    }
+
+    private void spawnItem()
+    {
+        //ランダムな位置にアイテムをスポーン
+        //確率で排出率を決める
+        float x=Random.Range(-spawnsize.x,spawnsize.x);
+        float y = Random.Range(-spawnsize.y, spawnsize.y);
+        Instantiate(ItemPrefab, new Vector3(x, y, 0), Quaternion.identity);
     }
     IEnumerator spawnPlayer()
     {
@@ -146,16 +161,36 @@ public class VS_GameManager : MonoBehaviour
     void Update()
     {
         //プレイヤー数が１以下になったらResultに移行
-        if (aliveNum <= 1&&!isResult)
+        if (aliveNum <= 1 && !isResult)
         {
             isResult = true;
             StartCoroutine(Result());
         }
 
         //デバッグ用
-        if(p.Length==0)
+        if (p.Length == 0)
             SceneManager.LoadScene("LobbyScene");
+
+        //アイテムスポーン
+        if (isItemOn)//アイテムありなら
+        {
+            if (!isSpawnItem)
+            {
+                isSpawnItem = true;
+                spawnItem();
+            }
+            else//インターバル
+            {
+                spawnDeltaTime += Time.deltaTime;
+                if (spawnDeltaTime > spawnItemTime)
+                {
+                    spawnDeltaTime = 0;
+                    isSpawnItem = false;
+                }
+            }
+        }
     }
+
     IEnumerator Result()
     {
         GameObject result = frontCanvas.transform.Find("Result").gameObject;
