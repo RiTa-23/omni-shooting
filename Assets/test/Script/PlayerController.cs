@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     //入力を受け取るPlayerInput
     private PlayerInput playerInput;
     private PlayerStatus playerStatus;
-    //移動時に加える力
+    //移動時に加える力=スピード
     public float force=7;
     //移動速度上限
     public float maxSpeed = 10;
@@ -44,14 +44,36 @@ public class PlayerController : MonoBehaviour
     //サブエネルギー消費量
     public int subEnergy = 30;
 
+    //入力を受け取るPlayerInput
+    private PlayerInput _playerInput;
+    //アクション名
+    private string _fireActionName = "Fire";
+    // アクション
+    private InputAction _fireAction;
+
+    //インターバルか
+    bool isFireInterval;
+    //インターバルの時間
+    public float intervalTime=0.3f;
+    //経過時間
+    private float deltaTime=0;
+
     //SE&BGM
     AudioSource audioSource;
     [SerializeField] AudioClip shootSE;
     [SerializeField] AudioClip dodgeSE;
     [SerializeField] AudioClip EnterSE;
+    [SerializeField] AudioClip bombSE;
     //effect
     [SerializeField] ParticleSystem dodgeEffect;
     public LobbyManager lobbyManager;
+
+    public void ResetControllerStatus()
+    {
+        force = 7;
+        maxSpeed = 10;
+        intervalTime = 0.3f;
+    }
 
     //ベクトルから角度を求める
     public static float Vector2ToAngle(Vector2 vector)
@@ -66,11 +88,14 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
+        intervalTime = 0.25f;
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
         audioSource = GetComponent<AudioSource>();
         playerStatus = GetComponent<PlayerStatus>();
         lobbyManager=GameObject.Find("LobbyManager").gameObject.GetComponent<LobbyManager>();
+        _playerInput=GetComponent<PlayerInput>();
+        _fireAction = _playerInput.actions[_fireActionName];
     }
     private void OnMove(InputValue movementValue)
     {
@@ -171,7 +196,7 @@ public class PlayerController : MonoBehaviour
             {
                 bulletPoint = transform.Find("bulletPoint").transform.position;
                 GameObject bomb = Instantiate(bombPrefab, bulletPoint, Quaternion.Euler(0, 0, rb.rotation));
-                audioSource.PlayOneShot(shootSE);
+                audioSource.PlayOneShot(bombSE);
                 StartCoroutine(vibration(0.5f, 0.5f, 0.1f));
                 playerStatus.EnergyUpdate(-subEnergy);
 
@@ -186,7 +211,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnFire()
+    private void fire()
     {
         if (isFireOk)
         {
@@ -260,6 +285,25 @@ public class PlayerController : MonoBehaviour
         if (rb.velocity.magnitude > maxSpeed)
         {
             rb.velocity *=0.95f;
+        }
+
+        /*ファイア*/
+        // 攻撃ボタンの押下状態取得
+        bool isFirePressed = _fireAction.IsPressed();
+        if (isFirePressed&&!isFireInterval)
+        {
+            isFireInterval = true;
+            fire();
+        }
+        //インターバル
+        if(isFireInterval)
+        {
+            deltaTime += Time.deltaTime;
+            if(deltaTime>intervalTime)
+            {
+                deltaTime = 0;
+                isFireInterval=false;
+            }
         }
     }
 

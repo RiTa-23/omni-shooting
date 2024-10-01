@@ -130,6 +130,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: bombSE
+      value: 
+      objectReference: {fileID: 8300000, guid: c3d747d8ce420da419b910895d338fa8, type: 3}
+    - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: EnterSE
       value: 
       objectReference: {fileID: 8300000, guid: 953ce87cb4cf16f408950546ddf28c4c, type: 3}
