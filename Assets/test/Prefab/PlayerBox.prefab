@@ -113,6 +113,14 @@ PrefabInstance:
       propertyPath: deadEffect
       value: 
       objectReference: {fileID: 3500665356449665194, guid: 2f91c4cf9e6f4d047bf145c95f1754e3, type: 3}
+    - target: {fileID: 2712209266945647559, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: energyNaturalRecovery
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3234967268532923497, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ab38b9c893b2c164ea49e26525fc146a, type: 3}
     - target: {fileID: 5911080967463549571, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -123,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: force
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6191902337867872915, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       propertyPath: speed
@@ -209,14 +217,17 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1182351320943533909, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3054927546578920054}
+      addedObject: {fileID: 942651916876822512}
+    - targetCorrespondingSourceObject: {fileID: 1182351320943533909, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6886346999929702936}
   m_SourcePrefab: {fileID: 100100000, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
 --- !u!1 &5984386817082555415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1182351320943533909, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}
   m_PrefabInstance: {fileID: 4856110036338991938}
   m_PrefabAsset: {fileID: 0}
---- !u!60 &3054927546578920054
+--- !u!60 &942651916876822512
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,8 +262,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.38, y: 1.11}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -260,10 +271,54 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+    - - {x: 0, y: -0.555}
+      - {x: 0.06, y: -0.555}
+      - {x: 0.17, y: -0.345}
+      - {x: 0.32999998, y: -0.555}
+      - {x: 0.35999998, y: -0.555}
+      - {x: 0.38, y: -0.545}
+      - {x: 0.58, y: -0.49499997}
+      - {x: 0.62, y: -0.465}
+      - {x: 0.48, y: -0.235}
+      - {x: 0.28, y: -0.16499999}
+      - {x: 0.66999996, y: -0.16499999}
+      - {x: 0.68, y: -0.155}
+      - {x: 0.68, y: -0.114999995}
+      - {x: 0.5, y: 0.024999999}
+      - {x: 0.16, y: 0.24499999}
+      - {x: 0.06, y: 0.525}
+      - {x: 0.03, y: 0.53499997}
+      - {x: -0.01, y: 0.525}
+      - {x: -0.17, y: -0.005}
+      - {x: -0.26, y: 0.105}
+      - {x: -0.31, y: 0.105}
+      - {x: -0.48999998, y: -0.005}
+      - {x: -0.62, y: -0.074999996}
+      - {x: -0.68, y: -0.125}
+      - {x: -0.66999996, y: -0.155}
+      - {x: -0.5, y: -0.16499999}
+      - {x: -0.44, y: -0.24499999}
+      - {x: -0.57, y: -0.49499997}
+      - {x: -0.53, y: -0.505}
+      - {x: -0.48999998, y: -0.48499998}
+      - {x: -0.32999998, y: -0.555}
+      - {x: -0.31, y: -0.555}
+      - {x: -0.28, y: -0.525}
+      - {x: -0.25, y: -0.42499998}
+      - {x: -0.13, y: -0.345}
   m_UseDelaunayMesh: 0
+--- !u!114 &6886346999929702936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984386817082555415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48248001886f6b940a920de63d05628e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7014898618752276741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2467325507304847943, guid: 790c6843f2f361445bf4c7f303c690af, type: 3}

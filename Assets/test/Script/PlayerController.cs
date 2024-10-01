@@ -44,6 +44,9 @@ public class PlayerController : MonoBehaviour
     //サブエネルギー消費量
     public int subEnergy = 30;
 
+    //エイムアシスト調節
+    [SerializeField]float aimAsistAngle=0;
+
     //入力を受け取るPlayerInput
     private PlayerInput _playerInput;
     //アクション名
@@ -118,7 +121,6 @@ public class PlayerController : MonoBehaviour
         if (Lookangle != -90)
         {
             rb.rotation = Lookangle;
-
             //エイムアシスト
             AimAssist();
         }
@@ -164,8 +166,8 @@ public class PlayerController : MonoBehaviour
         if (target!=-1)
         {
             LookValue_ = p[target].transform.position - pPos;
-            //指定の角度内ならエイム補正する(テスト30度)
-            if (Math.Abs(Lookangle - Vector2ToAngle(LookValue_) + 90) < 30)
+            //指定の角度内ならエイム補正する(aimAsistAngle)
+            if (Math.Abs(Lookangle - Vector2ToAngle(LookValue_) + 90) < aimAsistAngle)
             {
                 Lookangle = Vector2ToAngle(LookValue_) - 90;
                 rb.rotation = Lookangle;
