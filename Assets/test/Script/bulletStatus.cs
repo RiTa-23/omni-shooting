@@ -9,6 +9,16 @@ public class bulletStatus : MonoBehaviour
     [SerializeField]public int Owner;//íeÇèoÇµÇΩêlîªíË
 
     [SerializeField]bool isTriggerDestroy;//è’ìÀÇµÇΩÇÁè¡Ç¶ÇÈÇ©
+    private string colorCode;
+
+    private void Start()
+    {
+        colorCode = PlayerStatus.P_color[Owner];
+        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+        {
+            GetComponent<SpriteRenderer>().color = color;
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isTriggerDestroy)

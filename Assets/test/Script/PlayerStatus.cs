@@ -44,7 +44,7 @@ public class PlayerStatus : MonoBehaviour
     PlayerController playerController;
 
     //カラーコード
-    string[] P_color =
+    public static string[] P_color =
     {
         "#FF00F3",
         "#00FFFD",
