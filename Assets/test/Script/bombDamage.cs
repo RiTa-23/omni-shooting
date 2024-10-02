@@ -6,6 +6,7 @@ public class bombDamage : MonoBehaviour
 {
     float rangeRadius;//ダメージ範囲半径
     float MaxDamage=30;
+    float adjustValue=0.7f;//値調整用（爆弾とプレイヤーの距離計算）
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,8 @@ public class bombDamage : MonoBehaviour
             //敵との距離
             Vector2 dis = collision.transform.position-this.transform.position;
             //与えるダメージ
-            float damage= (1-dis.magnitude / rangeRadius)*MaxDamage;
+            float damage= (1 - (dis.magnitude-adjustValue) / rangeRadius)*MaxDamage;
+            Debug.Log(damage + "ダメージ");
             
             collision.GetComponent<PlayerStatus>().DamageProcess(damage,owner);
             //ノックバック

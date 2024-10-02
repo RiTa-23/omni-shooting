@@ -249,8 +249,8 @@ public class PlayerStatus : MonoBehaviour
         HP = MaxHP;
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;
-        Energybar.value = (float)Energy / (float)MaxEnergy;
         HPbar_img.color = Color.green;
+        Energybar.DOValue((float)Energy / (float)MaxEnergy, 0.5f);
 
         //速度を0にする
         this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
