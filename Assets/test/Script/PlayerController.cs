@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
         //Vectorを取得→角度に変換
         LookValue_ = LookValue.Get<Vector2>();
         Lookangle = Vector2ToAngle(LookValue_) - 90;
-        if (Lookangle != -90)
+        if (Lookangle != -90&&rb!=null)
         {
             rb.rotation = Lookangle;
             //エイムアシスト
@@ -162,7 +162,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-            print("aimAssist");
         if (target!=-1)
         {
             LookValue_ = p[target].transform.position - pPos;
@@ -251,18 +250,28 @@ public class PlayerController : MonoBehaviour
     private void OnEnter()
     {
         print("右ボタン押されたよ");
-        var VS_GM = playerStatus.VS_GM;
-        //result画面の時
-        if(VS_GM!=null)
+        try
         {
-            //リザルト確認処理
-            if (VS_GM.isResultWait&&!VS_GM.isResultOk[playerStatus.P_Num])
+            if (playerStatus.VS_GM != null)
             {
-                print("resultOk!");
-                VS_GM.isResultOk[playerStatus.P_Num] = true;
-                audioSource.PlayOneShot(EnterSE);
+                var VS_GM = playerStatus.VS_GM;
+                //result画面の時
+                //リザルト確認処理
+                if (VS_GM.isResultWait && !VS_GM.isResultOk[playerStatus.P_Num])
+                {
+                    print("resultOk!");
+                    VS_GM.isResultOk[playerStatus.P_Num] = true;
+                    audioSource.PlayOneShot(EnterSE);
+                }
             }
-        }    
+        }
+        catch
+        {
+            print("OnEnterで例外発生");
+        }
+        
+        
+        
 
     }
     private void OnCancel()
