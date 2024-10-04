@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bbc2d4a1b9e7d79489a12bae5cc6d1f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4da969169f1e4e441b525cae86ab2ec4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -107,8 +107,8 @@ MonoBehaviour:
   rapidFireUp_img: {fileID: 21300000, guid: bbc2d4a1b9e7d79489a12bae5cc6d1f3, type: 3}
   energyRecoverySpeedUp_img: {fileID: 21300000, guid: c1e754830b5347844a130a60d32d6f44, type: 3}
   life_img: {fileID: 21300000, guid: ebe37d7228a3b00409ed33225a94bba3, type: 3}
-  invincible_img: {fileID: 21300000, guid: d2c5f5bade5bd2446895893a55023a33, type: 3}
-  infinity_img: {fileID: 21300000, guid: f4caf0798ba19894a84ce606137479ab, type: 3}
+  invincible_img: {fileID: 21300000, guid: 170a944b61bb03544822d62a1b51500d, type: 3}
+  infinity_img: {fileID: 21300000, guid: 4da969169f1e4e441b525cae86ab2ec4, type: 3}
   speedUp_P: 15
   maxSpeedUp_P: 15
   maxEnergyUp_P: 15

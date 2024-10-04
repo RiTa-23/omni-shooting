@@ -25,6 +25,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] AudioClip deadSE;
     [SerializeField] AudioClip hitSE;
     [SerializeField] AudioClip enterSE;
+    [SerializeField] AudioClip specialItemSE;
     //Effect
     [SerializeField] ParticleSystem deadEffect;
     [SerializeField] ParticleSystem hitEffect;
@@ -300,6 +301,7 @@ public class PlayerStatus : MonoBehaviour
         isInvincible = true;
         INVstartTime = Time.time;
         //エフェクトを付ける
+        audioSource.PlayOneShot(specialItemSE);
         invincibleShield.SetActive(true);
     }
     public void Infinity()
@@ -307,6 +309,7 @@ public class PlayerStatus : MonoBehaviour
         isInfinity = true;
         INFstartTime = Time.time;
         //エフェクトを付ける
+        audioSource.PlayOneShot(specialItemSE);
         infinityCircle.SetActive(true);
     }
 }
