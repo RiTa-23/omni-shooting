@@ -5,9 +5,12 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -99,12 +102,15 @@ public class PlayerController : MonoBehaviour
         lobbyManager=GameObject.Find("LobbyManager").gameObject.GetComponent<LobbyManager>();
         _playerInput=GetComponent<PlayerInput>();
         _fireAction = _playerInput.actions[_fireActionName];
+
+        //test
+        _playerInput.uiInputModule=EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
     }
     private void OnMove(InputValue movementValue)
     {
         // Moveアクションの入力値を取得
         /*移動操作*/
-        if (isControllOk)
+        if (isControllOk&&rb!=null)
         {
             movementValue_ = movementValue.Get<Vector2>();//ブースト用
             rb.AddForce(movementValue_ * force);
@@ -274,7 +280,7 @@ public class PlayerController : MonoBehaviour
         
 
     }
-    private void OnCancel()
+    private void OnPlayerCancel()
     {
         //ロビーにいるとき
         if (SceneManager.GetActiveScene().name == "LobbyScene")
