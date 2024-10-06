@@ -14,6 +14,17 @@ public class Item : MonoBehaviour
     [SerializeField] Sprite rapidFireUp_img;
     [SerializeField] Sprite energyRecoverySpeedUp_img;
     [SerializeField] Sprite life_img;
+    [SerializeField] Sprite invincible_img;
+    [SerializeField] Sprite infinity_img;
+
+    [SerializeField] int speedUp_P = 15;
+    [SerializeField] int maxSpeedUp_P = 15;
+    [SerializeField] int maxEnergyUp_P = 15;
+    [SerializeField] int rapidFireUp_P = 15;
+    [SerializeField] int energyRecoverySpeedUp_P = 15;
+    [SerializeField] int life_P = 15;
+    [SerializeField] int invincible_P = 5;
+    [SerializeField] int infinity_P = 5;
 
     // Start is called before the first frame update
 
@@ -26,40 +37,45 @@ public class Item : MonoBehaviour
 
         //乱数からアイテム決定
         //アイテムごとに見た目を変える
-        if (rnd <= 15)
+        if (rnd <= speedUp_P)
         {
             thisItemName = ItemName.speedUp;
             spriteRenderer.sprite = speedUp_img;
         }
-        else if(rnd<=30)
+        else if(rnd<=speedUp_P+maxSpeedUp_P)
         {
             thisItemName = ItemName.maxSpeedUp;
             spriteRenderer.sprite = maxSpeedUp_img;
         }
-        else if(rnd<=45)
+        else if(rnd<= speedUp_P + maxSpeedUp_P+ maxEnergyUp_P)
         {
             thisItemName = ItemName.maxEnergyUp;
            spriteRenderer.sprite= maxEnergyUp_img;
         }
-        else if(rnd<=60)
+        else if(rnd<= speedUp_P + maxSpeedUp_P + maxEnergyUp_P+rapidFireUp_P)
         {
             thisItemName = ItemName.rapidFireUp;
             spriteRenderer.sprite = rapidFireUp_img;
         }
-        else if(rnd<=70)
+        else if(rnd<= speedUp_P + maxSpeedUp_P + maxEnergyUp_P + rapidFireUp_P+energyRecoverySpeedUp_P)
         {
             thisItemName = ItemName.energyRecoverySpeedUp;
             spriteRenderer.sprite= energyRecoverySpeedUp_img;
         }
-        else if(rnd<=80)
+        else if(rnd<= speedUp_P + maxSpeedUp_P + maxEnergyUp_P + rapidFireUp_P + energyRecoverySpeedUp_P+life_P)
         {
             thisItemName = ItemName.life;
             spriteRenderer.sprite=life_img;
         }
-        else
+        else if(rnd<=speedUp_P + maxSpeedUp_P + maxEnergyUp_P + rapidFireUp_P + energyRecoverySpeedUp_P + life_P+invincible_P)
         {
-            thisItemName = ItemName.speedUp;
-            spriteRenderer.sprite = speedUp_img;
+            thisItemName = ItemName.invincible;
+            spriteRenderer.sprite = invincible_img;
+        }
+        else if(rnd<= speedUp_P + maxSpeedUp_P + maxEnergyUp_P + rapidFireUp_P + energyRecoverySpeedUp_P + life_P+invincible_P+infinity_P)
+        {
+            thisItemName = ItemName.infinity;
+            spriteRenderer.sprite=infinity_img;
         }
         
         //時間経過で消滅
@@ -120,6 +136,8 @@ public class Item : MonoBehaviour
                         if (playerController.intervalTime > 0.02)
                             playerController.intervalTime -= 0.025f; break;
                     case ItemName.life: playerStatus.HPUpdate(20); break;
+                    case ItemName.invincible: playerStatus.Invincible();break;
+                    case ItemName.infinity: playerStatus.Infinity();break;
                 }
                 //消滅する
                 Destroy(gameObject);

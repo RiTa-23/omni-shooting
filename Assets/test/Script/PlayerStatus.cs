@@ -25,6 +25,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] AudioClip deadSE;
     [SerializeField] AudioClip hitSE;
     [SerializeField] AudioClip enterSE;
+    [SerializeField] AudioClip specialItemSE;
     //Effect
     [SerializeField] ParticleSystem deadEffect;
     [SerializeField] ParticleSystem hitEffect;
@@ -52,6 +53,16 @@ public class PlayerStatus : MonoBehaviour
         "#5DFF00"
     };
 
+    //無敵・無限
+    bool isInvincible = false;
+    bool isInfinity = false;
+    float invincibleTime = 10;//持続時間
+    float infinityTime = 5;
+    float INVstartTime = 0;//開始時間
+    float INFstartTime = 0;
+    [SerializeField]GameObject invincibleShield;
+    [SerializeField]GameObject infinityCircle;
+
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -76,7 +87,7 @@ public class PlayerStatus : MonoBehaviour
     //ダメージ処理
     public void DamageProcess(float damage,int owner)
     {
-        if(!isDead)
+        if(!isDead&&!isInvincible)
         {
             HPUpdate(-damage);
             //敵のリザルト調整
@@ -97,7 +108,7 @@ public class PlayerStatus : MonoBehaviour
             //hitEffect
             Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
             audioSource.PlayOneShot(hitSE);
-            gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
+            gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.15f).OnComplete(() =>
             {
                 if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
                 {
@@ -152,10 +163,17 @@ public class PlayerStatus : MonoBehaviour
     }*/
     public void EnergyUpdate(float recoveryAmount)
     {
-        Energy += recoveryAmount;
-        if(Energy > MaxEnergy)
+        if (isInfinity)
         {
             Energy = MaxEnergy;
+        }
+        else
+        {
+            Energy += recoveryAmount;
+            if (Energy > MaxEnergy)
+            {
+                Energy = MaxEnergy;
+            }
         }
         Energybar.DOValue((float)Energy / (float)MaxEnergy,0.5f);
     }
@@ -189,6 +207,26 @@ public class PlayerStatus : MonoBehaviour
         if (Energy < MaxEnergy)
         {
             EnergyUpdate(energyNaturalRecovery);
+        }
+
+        //無敵・無限処理
+        if (isInvincible)
+        {
+            if (Time.time - INVstartTime > invincibleTime)
+            {
+                isInvincible = false;
+                //エフェクト解除
+                invincibleShield.SetActive(false);
+            }
+        }
+        if (isInfinity)
+        {
+            if(Time.time- INFstartTime > infinityTime)
+            {
+                isInfinity = false;
+                //エフェクト解除
+                infinityCircle.SetActive(false);
+            }
         }
 
         //脱落処理
@@ -243,16 +281,35 @@ public class PlayerStatus : MonoBehaviour
     public void ResetStatus()
     {
         isDead = false;
+        isInfinity = false;
+        isInvincible = false;
         MaxHP = 100;
         MaxEnergy = 100;
         energyNaturalRecovery = 0.12f;
         HP = MaxHP;
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;
-        Energybar.value = (float)Energy / (float)MaxEnergy;
         HPbar_img.color = Color.green;
+        Energybar.DOValue((float)Energy / (float)MaxEnergy, 0.5f);
 
         //速度を0にする
         this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+    }
+
+    public void Invincible()
+    {
+        isInvincible = true;
+        INVstartTime = Time.time;
+        //エフェクトを付ける
+        audioSource.PlayOneShot(specialItemSE);
+        invincibleShield.SetActive(true);
+    }
+    public void Infinity()
+    {
+        isInfinity = true;
+        INFstartTime = Time.time;
+        //エフェクトを付ける
+        audioSource.PlayOneShot(specialItemSE);
+        infinityCircle.SetActive(true);
     }
 }

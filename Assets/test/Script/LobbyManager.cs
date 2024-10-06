@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class LobbyManager : MonoBehaviour
     GameObject[] p;
 
     [SerializeField]GameObject playerInputManager;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -43,6 +46,7 @@ public class LobbyManager : MonoBehaviour
 
         }
     }
+    [SerializeField] GameObject defaultGameObject;
 
     // Update is called once per frame
     void Update()
@@ -127,7 +131,6 @@ public class LobbyManager : MonoBehaviour
         {
             if (i!=playerNum)
             p[i].GetComponent<PlayerStatus>().ResetPlayer();
-
         }
 
         //ready‚ÌƒŠƒZƒbƒg

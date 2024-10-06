@@ -5,9 +5,12 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -99,12 +102,15 @@ public class PlayerController : MonoBehaviour
         lobbyManager=GameObject.Find("LobbyManager").gameObject.GetComponent<LobbyManager>();
         _playerInput=GetComponent<PlayerInput>();
         _fireAction = _playerInput.actions[_fireActionName];
+
+        //test
+        _playerInput.uiInputModule=EventSystem.current.gameObject.GetComponent<InputSystemUIInputModule>();
     }
     private void OnMove(InputValue movementValue)
     {
         // Moveアクションの入力値を取得
         /*移動操作*/
-        if (isControllOk)
+        if (isControllOk&&rb!=null)
         {
             movementValue_ = movementValue.Get<Vector2>();//ブースト用
             rb.AddForce(movementValue_ * force);
@@ -118,7 +124,7 @@ public class PlayerController : MonoBehaviour
         //Vectorを取得→角度に変換
         LookValue_ = LookValue.Get<Vector2>();
         Lookangle = Vector2ToAngle(LookValue_) - 90;
-        if (Lookangle != -90)
+        if (Lookangle != -90&&rb!=null)
         {
             rb.rotation = Lookangle;
             //エイムアシスト
@@ -162,7 +168,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-            print("aimAssist");
         if (target!=-1)
         {
             LookValue_ = p[target].transform.position - pPos;
@@ -248,24 +253,31 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-    private void OnEnter()
+    private void OnOK()
     {
         print("右ボタン押されたよ");
-        var VS_GM = playerStatus.VS_GM;
-        //result画面の時
-        if(VS_GM!=null)
+        try
         {
-            //リザルト確認処理
-            if (VS_GM.isResultWait&&!VS_GM.isResultOk[playerStatus.P_Num])
+            if (playerStatus.VS_GM != null)
             {
-                print("resultOk!");
-                VS_GM.isResultOk[playerStatus.P_Num] = true;
-                audioSource.PlayOneShot(EnterSE);
+                var VS_GM = playerStatus.VS_GM;
+                //result画面の時
+                //リザルト確認処理
+                if (VS_GM.isResultWait && !VS_GM.isResultOk[playerStatus.P_Num])
+                {
+                    print("resultOk!");
+                    VS_GM.isResultOk[playerStatus.P_Num] = true;
+                    audioSource.PlayOneShot(EnterSE);
+                }
             }
-        }    
+        }
+        catch
+        {
+            print("OnEnterで例外発生");
+        }
 
     }
-    private void OnCancel()
+    private void OnLeave()
     {
         //ロビーにいるとき
         if (SceneManager.GetActiveScene().name == "LobbyScene")
@@ -278,6 +290,25 @@ public class PlayerController : MonoBehaviour
                 lobbyManager.ExitLobby(playerStatus.P_Num);
             }
         } 
+    }
+
+    private void OnOpenMenu()
+    {
+        GameObject menuButton = GameObject.FindWithTag("Menu");
+        if (menuButton != null)
+        {
+            menuButton.GetComponent<Button>().onClick.Invoke();
+            playerInput.SwitchCurrentActionMap("UI");
+        }
+    }
+    private void OnCancel()
+    {
+        GameObject XButton = GameObject.FindWithTag("returnPlayer");
+        if (XButton != null)
+        {
+            XButton.GetComponent<Button>().onClick.Invoke();
+            playerInput.SwitchCurrentActionMap("Player");
+        }
     }
 
     // Update is called once per frame
