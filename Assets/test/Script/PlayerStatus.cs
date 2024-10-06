@@ -82,7 +82,6 @@ public class PlayerStatus : MonoBehaviour
 
         print($"プレイヤー#{P_Num}が入室");
         audioSource.PlayOneShot(enterSE);
-        playerInput.SwitchCurrentActionMap("UI");
     }
 
     //ダメージ処理

@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Start",
+                    "name": "Join",
                     "type": "Button",
                     "id": "9c85be83-ad59-4aff-be75-9b4e044f5af3",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Enter",
+                    "name": "OK",
                     "type": "Button",
                     "id": "fb1368d9-31b0-4442-9cd8-e88e9a156d86",
                     "expectedControlType": "Button",
@@ -72,6 +72,24 @@
                     "name": "PlayerCancel",
                     "type": "Button",
                     "id": "28a24e64-54eb-40ef-a4e2-4831d3001f08",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenMenu",
+                    "type": "Button",
+                    "id": "090731dc-b99a-4309-b425-358f7e2c1b8b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Leave",
+                    "type": "Button",
+                    "id": "d4b218b1-f2da-47fb-98b1-dd43ab3e5d69",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -130,7 +148,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Start",
+                    "action": "Join",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -141,7 +159,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Enter",
+                    "action": "OK",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -164,6 +182,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Sub",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fbf8a783-9cb2-4fa8-9c8d-7e9abd117638",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "OpenMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1216136e-dbdd-4621-bb16-2700e4a33568",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Leave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -532,10 +572,10 @@
                 {
                     "name": "",
                     "id": "268c8181-8515-4ae6-805d-7023bba65e0f",
-                    "path": "*/{Submit}",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": "Keyboard&Mouse;Touch;Joystick;XR;Gamepad",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -543,7 +583,7 @@
                 {
                     "name": "",
                     "id": "d986cc4e-d486-48a5-b172-ddae5467c82d",
-                    "path": "*/{Cancel}",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",

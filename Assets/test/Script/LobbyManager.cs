@@ -23,6 +23,7 @@ public class LobbyManager : MonoBehaviour
     GameObject[] p;
 
     [SerializeField]GameObject playerInputManager;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -130,7 +131,6 @@ public class LobbyManager : MonoBehaviour
         {
             if (i!=playerNum)
             p[i].GetComponent<PlayerStatus>().ResetPlayer();
-
         }
 
         //ready‚ÌƒŠƒZƒbƒg

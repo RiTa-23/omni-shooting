@@ -6,6 +6,8 @@ TagManager:
   tags:
   - bullet
   - Item
+  - Menu
+  - returnPlayer
   layers:
   - Default
   - TransparentFX

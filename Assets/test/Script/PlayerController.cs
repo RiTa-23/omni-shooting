@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-    private void OnEnter()
+    private void OnOK()
     {
         print("右ボタン押されたよ");
         try
@@ -275,12 +275,9 @@ public class PlayerController : MonoBehaviour
         {
             print("OnEnterで例外発生");
         }
-        
-        
-        
 
     }
-    private void OnPlayerCancel()
+    private void OnLeave()
     {
         //ロビーにいるとき
         if (SceneManager.GetActiveScene().name == "LobbyScene")
@@ -293,6 +290,25 @@ public class PlayerController : MonoBehaviour
                 lobbyManager.ExitLobby(playerStatus.P_Num);
             }
         } 
+    }
+
+    private void OnOpenMenu()
+    {
+        GameObject menuButton = GameObject.FindWithTag("Menu");
+        if (menuButton != null)
+        {
+            menuButton.GetComponent<Button>().onClick.Invoke();
+            playerInput.SwitchCurrentActionMap("UI");
+        }
+    }
+    private void OnCancel()
+    {
+        GameObject XButton = GameObject.FindWithTag("returnPlayer");
+        if (XButton != null)
+        {
+            XButton.GetComponent<Button>().onClick.Invoke();
+            playerInput.SwitchCurrentActionMap("Player");
+        }
     }
 
     // Update is called once per frame

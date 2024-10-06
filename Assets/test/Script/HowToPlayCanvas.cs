@@ -4,9 +4,13 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class HowToPlayCanvas : MonoBehaviour
 {
+    [SerializeField]PlayerJoinController playerJoinController;
+
     GameObject HowToPlayCanvas_;
     GameObject Panel;
 
@@ -31,6 +35,7 @@ public class HowToPlayCanvas : MonoBehaviour
 
     enum pageState
     {
+        none,
         rule1,
         rule2,
         operate,
@@ -46,6 +51,9 @@ public class HowToPlayCanvas : MonoBehaviour
         Panel = HowToPlayCanvas_.transform.Find("Panel").gameObject;
         audioSource=HowToPlayCanvas_.GetComponent<AudioSource>();
         Image = Panel.transform.Find("Image").GetComponent<Image>();
+
+        if(state== pageState.rule1)
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
     void SwitchPageState(pageState state)
@@ -87,15 +95,44 @@ public class HowToPlayCanvas : MonoBehaviour
         if (!Panel.activeSelf)
         {
             Panel.SetActive(true);
+
             audioSource.PlayOneShot(openWindowSE);
+            //パネルアニメーション
             Panel.transform.localScale = Vector3.zero;
-            Panel.transform.DOScale(new Vector3(0.98f, 0.98f, 0.98f), 0.3f);
+            Panel.transform.DOScale(new Vector3(1, 1, 1), 0.3f).onKill = (() =>
+            {
+                //時間停止
+                if (Panel.activeSelf)
+                {
+                    Time.timeScale = 0;
+                }
+            });
+            //ActionMapをUIに変更
+            ChangeActionMap("UI");
+            playerJoinController.DisablePlayerJoining();
         }
     }
     public void Xbutton()
     {
-        audioSource.PlayOneShot(cancelSE);
-        Panel.SetActive(false);
+        if (Panel.activeSelf)
+        {
+            audioSource.PlayOneShot(cancelSE);
+            Panel.SetActive(false);
+            ChangeActionMap("Player");
+            //時間のスピードを戻す
+            Time.timeScale = 1.0f;
+            playerJoinController.EnablePlayerJoining();
+        }
+    }
 
+    private void ChangeActionMap(string mapName)
+    {
+        //全プレイヤーのActionMapを一斉変更する
+        var p = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < p.Length; i++)
+        {
+            p[i].GetComponent<PlayerInput>().SwitchCurrentActionMap(mapName);
+        }
     }
 }

@@ -10,7 +10,6 @@ public class ButtonsSelect : MonoBehaviour
     void Start()
     {
         button = GetComponent<Button>();
-        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
     void Update()
