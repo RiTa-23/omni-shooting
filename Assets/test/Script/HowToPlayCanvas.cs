@@ -15,9 +15,9 @@ public class HowToPlayCanvas : MonoBehaviour
     GameObject Panel;
 
     //SE
-    AudioSource audioSource;
+    [SerializeField]AudioSource audioSource;
     [SerializeField] AudioClip enterSE;
-    [SerializeField] AudioClip openWindowSE;
+    
     [SerializeField] AudioClip cancelSE;
 
     //Sprite
@@ -26,14 +26,9 @@ public class HowToPlayCanvas : MonoBehaviour
     [SerializeField] Sprite operate_Sprite;
     [SerializeField] Sprite item_Sprite;
 
-    [SerializeField] Sprite Button_Sprite;
-    [SerializeField] Sprite ButtonPush_Sprite;
-
     Image Image;
 
-    [SerializeField]bool isNowSprite;
-
-    enum pageState
+    public enum pageState
     {
         none,
         rule1,
@@ -41,19 +36,30 @@ public class HowToPlayCanvas : MonoBehaviour
         operate,
         item
     }
+    pageState nowState;
 
-    [SerializeField] pageState state;
+    GameObject buttons;
+
+    GameObject rule1;
+    GameObject rule2;
+    GameObject operate;
+    GameObject item;
 
     // Start is called before the first frame update
     void Start()
     {
         HowToPlayCanvas_ = GameObject.Find("HowToPlayCanvas");
         Panel = HowToPlayCanvas_.transform.Find("Panel").gameObject;
-        audioSource=HowToPlayCanvas_.GetComponent<AudioSource>();
         Image = Panel.transform.Find("Image").GetComponent<Image>();
 
-        if(state== pageState.rule1)
-        EventSystem.current.SetSelectedGameObject(gameObject);
+        buttons = Panel.transform.Find("buttons").gameObject;
+        rule1 = buttons.transform.Find("Rule(1)").gameObject;
+        rule2 = buttons.transform.Find("Rule(2)").gameObject;
+        operate = buttons.transform.Find("Operate").gameObject;
+        item = buttons.transform.Find("Item").gameObject;
+
+        nowState = pageState.rule1;
+
     }
 
     void SwitchPageState(pageState state)
@@ -68,50 +74,63 @@ public class HowToPlayCanvas : MonoBehaviour
         }
     }
 
-    public void pushButton()
+    public void pushButton(pageState state)
     {
-        if (!isNowSprite)
+        SwitchPageState(state);
+        foreach (Transform button in Panel.transform.Find("buttons"))
         {
-            SwitchPageState(state);
-            foreach (Transform button in Panel.transform.Find("buttons"))
-            {
-                button.GetComponent<HowToPlayCanvas>().SpriteReset();
-            }
-            isNowSprite = true;
-            GetComponent<Image>().sprite = ButtonPush_Sprite;
+            button.GetComponent<ruleButtons>().SpriteReset();
         }
+        nowState = state;
     }
+    bool isButtonInterval = false;
+    float buttonIntervalTime = 0.3f;
+    float buttonNowTime = 0;
 
-
-    void SpriteReset()
+    private void Update()
     {
-        isNowSprite=false;
-        GetComponent<Image>().sprite = Button_Sprite;
-    }
-
-    public void HowToPlayButton()
-    {
-        
-        if (!Panel.activeSelf)
+        float horizontal = Input.GetAxis("Horizontal");
+        if (horizontal != 0&&!isButtonInterval)
         {
-            Panel.SetActive(true);
-
-            audioSource.PlayOneShot(openWindowSE);
-            //パネルアニメーション
-            Panel.transform.localScale = Vector3.zero;
-            Panel.transform.DOScale(new Vector3(1, 1, 1), 0.3f).onKill = (() =>
+            print("horizontal");
+            print(nowState);
+            print(horizontal);
+            if (horizontal > 0.5)
             {
-                //時間停止
-                if (Panel.activeSelf)
+                switch (nowState)
                 {
-                    Time.timeScale = 0;
+                    case pageState.rule1: rule2.GetComponent<ruleButtons>().pushButton(); break;
+                    case pageState.rule2: operate.GetComponent<ruleButtons>().pushButton(); break;
+                    case pageState.operate: item.GetComponent<ruleButtons>().pushButton(); break;
+                    case pageState.item: rule1.GetComponent<ruleButtons>().pushButton(); break;
                 }
-            });
-            //ActionMapをUIに変更
-            ChangeActionMap("UI");
-            playerJoinController.DisablePlayerJoining();
+                isButtonInterval = true;
+                print("interval");
+            }
+            else if(horizontal < -0.5)
+            {
+                switch (nowState)
+                {
+                    case pageState.rule1: item.GetComponent<ruleButtons>().pushButton(); break;
+                    case pageState.rule2: rule1.GetComponent<ruleButtons>().pushButton(); break;
+                    case pageState.operate: rule2.GetComponent<ruleButtons>().pushButton(); break;
+                    case pageState.item: operate.GetComponent<ruleButtons>().pushButton(); break;
+                }
+                isButtonInterval=true;
+            }
+        }
+
+        if(isButtonInterval)
+        {
+            buttonNowTime += Time.deltaTime;
+            if(buttonNowTime>buttonIntervalTime)
+            {
+                buttonNowTime = 0;
+                isButtonInterval = false;
+            }
         }
     }
+
     public void Xbutton()
     {
         if (Panel.activeSelf)

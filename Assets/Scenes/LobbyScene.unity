@@ -634,8 +634,8 @@ GameObject:
   - component: {fileID: 386589594}
   - component: {fileID: 386589593}
   - component: {fileID: 386589592}
-  - component: {fileID: 386589595}
   - component: {fileID: 386589596}
+  - component: {fileID: 386589597}
   m_Layer: 5
   m_Name: Rule(1)
   m_TagString: Untagged
@@ -681,7 +681,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -693,7 +693,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 62dfab7af3e9c7148a2031444ed9e318, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -706,8 +706,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 386589595}
-        m_TargetAssemblyTypeName: HowToPlayCanvas, Assembly-CSharp
+      - m_Target: {fileID: 386589597}
+        m_TargetAssemblyTypeName: ruleButtons, Assembly-CSharp
         m_MethodName: pushButton
         m_Mode: 1
         m_Arguments:
@@ -756,29 +756,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 386589590}
   m_CullTransparentMesh: 1
---- !u!114 &386589595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 386589590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
-  openWindowSE: {fileID: 0}
-  cancelSE: {fileID: 0}
-  rule1_Sprite: {fileID: 21300000, guid: 8118471c6dc92c145aa45e61496cde15, type: 3}
-  rule2_Sprite: {fileID: 21300000, guid: e3ae1cae7600b3f40a05e9ab7c9e05c5, type: 3}
-  operate_Sprite: {fileID: 21300000, guid: d21ad53cb59e04640a3e72c2ac9248be, type: 3}
-  item_Sprite: {fileID: 21300000, guid: a4cb53f084a22dc41a7930f777cf1294, type: 3}
-  Button_Sprite: {fileID: 21300000, guid: 26b7296019c22f74b9dbc203f3b17544, type: 3}
-  ButtonPush_Sprite: {fileID: 21300000, guid: 62dfab7af3e9c7148a2031444ed9e318, type: 3}
-  isNowSprite: 1
-  state: 1
 --- !u!114 &386589596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +768,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee78abe65c083ec4ebc5934107130db1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &386589597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386589590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e0804e46f6040d468abcdfd43c1b88a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanvasScript: {fileID: 1697177194}
+  isNowSprit: 1
+  state: 1
+  buttonSprite: {fileID: 21300000, guid: 26b7296019c22f74b9dbc203f3b17544, type: 3}
+  pushedSprite: {fileID: 21300000, guid: 62dfab7af3e9c7148a2031444ed9e318, type: 3}
 --- !u!1 &439648046
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,8 +797,8 @@ GameObject:
   - component: {fileID: 439648050}
   - component: {fileID: 439648049}
   - component: {fileID: 439648048}
-  - component: {fileID: 439648051}
   - component: {fileID: 439648052}
+  - component: {fileID: 439648053}
   m_Layer: 5
   m_Name: Operate
   m_TagString: Untagged
@@ -850,7 +844,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -862,7 +856,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 0d7853606ed5be541a261ecf9c3eee0f, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -875,8 +869,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 439648051}
-        m_TargetAssemblyTypeName: HowToPlayCanvas, Assembly-CSharp
+      - m_Target: {fileID: 439648053}
+        m_TargetAssemblyTypeName: ruleButtons, Assembly-CSharp
         m_MethodName: pushButton
         m_Mode: 1
         m_Arguments:
@@ -925,29 +919,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439648046}
   m_CullTransparentMesh: 1
---- !u!114 &439648051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439648046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
-  openWindowSE: {fileID: 0}
-  cancelSE: {fileID: 0}
-  rule1_Sprite: {fileID: 21300000, guid: 8118471c6dc92c145aa45e61496cde15, type: 3}
-  rule2_Sprite: {fileID: 21300000, guid: e3ae1cae7600b3f40a05e9ab7c9e05c5, type: 3}
-  operate_Sprite: {fileID: 21300000, guid: d21ad53cb59e04640a3e72c2ac9248be, type: 3}
-  item_Sprite: {fileID: 21300000, guid: a4cb53f084a22dc41a7930f777cf1294, type: 3}
-  Button_Sprite: {fileID: 21300000, guid: 3d6d68ed6ee83a3428b110a5258a1965, type: 3}
-  ButtonPush_Sprite: {fileID: 21300000, guid: 0d7853606ed5be541a261ecf9c3eee0f, type: 3}
-  isNowSprite: 0
-  state: 3
 --- !u!114 &439648052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,6 +931,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee78abe65c083ec4ebc5934107130db1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &439648053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439648046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e0804e46f6040d468abcdfd43c1b88a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanvasScript: {fileID: 1697177194}
+  isNowSprit: 0
+  state: 3
+  buttonSprite: {fileID: 21300000, guid: 3d6d68ed6ee83a3428b110a5258a1965, type: 3}
+  pushedSprite: {fileID: 21300000, guid: 0d7853606ed5be541a261ecf9c3eee0f, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,8 +2193,8 @@ GameObject:
   - component: {fileID: 1195615607}
   - component: {fileID: 1195615606}
   - component: {fileID: 1195615605}
-  - component: {fileID: 1195615608}
   - component: {fileID: 1195615609}
+  - component: {fileID: 1195615610}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -2252,7 +2240,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2264,7 +2252,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: ad9651ca1485b124cb6801e2f871e193, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -2277,8 +2265,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1195615608}
-        m_TargetAssemblyTypeName: HowToPlayCanvas, Assembly-CSharp
+      - m_Target: {fileID: 1195615610}
+        m_TargetAssemblyTypeName: ruleButtons, Assembly-CSharp
         m_MethodName: pushButton
         m_Mode: 1
         m_Arguments:
@@ -2327,29 +2315,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195615603}
   m_CullTransparentMesh: 1
---- !u!114 &1195615608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195615603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
-  openWindowSE: {fileID: 0}
-  cancelSE: {fileID: 0}
-  rule1_Sprite: {fileID: 21300000, guid: 8118471c6dc92c145aa45e61496cde15, type: 3}
-  rule2_Sprite: {fileID: 21300000, guid: e3ae1cae7600b3f40a05e9ab7c9e05c5, type: 3}
-  operate_Sprite: {fileID: 21300000, guid: d21ad53cb59e04640a3e72c2ac9248be, type: 3}
-  item_Sprite: {fileID: 21300000, guid: a4cb53f084a22dc41a7930f777cf1294, type: 3}
-  Button_Sprite: {fileID: 21300000, guid: ad9651ca1485b124cb6801e2f871e193, type: 3}
-  ButtonPush_Sprite: {fileID: 21300000, guid: abe6dcdd9a5c2454390e6d4ac33ea1cd, type: 3}
-  isNowSprite: 0
-  state: 4
 --- !u!114 &1195615609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2362,6 +2327,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee78abe65c083ec4ebc5934107130db1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1195615610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195615603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e0804e46f6040d468abcdfd43c1b88a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanvasScript: {fileID: 1697177194}
+  isNowSprit: 0
+  state: 4
+  buttonSprite: {fileID: 21300000, guid: ad9651ca1485b124cb6801e2f871e193, type: 3}
+  pushedSprite: {fileID: 21300000, guid: abe6dcdd9a5c2454390e6d4ac33ea1cd, type: 3}
 --- !u!1 &1286951440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2449,8 +2431,8 @@ GameObject:
   - component: {fileID: 1303950397}
   - component: {fileID: 1303950396}
   - component: {fileID: 1303950395}
-  - component: {fileID: 1303950398}
   - component: {fileID: 1303950399}
+  - component: {fileID: 1303950400}
   m_Layer: 5
   m_Name: Xbutton
   m_TagString: returnPlayer
@@ -2521,9 +2503,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1303950398}
-        m_TargetAssemblyTypeName: HowToPlayCanvas, Assembly-CSharp
-        m_MethodName: Xbutton
+      - m_Target: {fileID: 1303950400}
+        m_TargetAssemblyTypeName: Xbutton, Assembly-CSharp
+        m_MethodName: pushButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2571,29 +2553,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303950393}
   m_CullTransparentMesh: 1
---- !u!114 &1303950398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303950393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
-  openWindowSE: {fileID: 0}
-  cancelSE: {fileID: 8300000, guid: 8e314b456a6101f4db6f24eda38d9961, type: 3}
-  rule1_Sprite: {fileID: 0}
-  rule2_Sprite: {fileID: 0}
-  operate_Sprite: {fileID: 0}
-  item_Sprite: {fileID: 0}
-  Button_Sprite: {fileID: 0}
-  ButtonPush_Sprite: {fileID: 0}
-  isNowSprite: 0
-  state: 0
 --- !u!114 &1303950399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2606,6 +2565,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d94b2281b968474d8927072aa4a3ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1303950400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303950393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18dfa3ba496c5442bf40c1a6a72c428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanvasScript: {fileID: 1697177194}
 --- !u!1 &1309737430
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,8 +2590,8 @@ GameObject:
   - component: {fileID: 1309737434}
   - component: {fileID: 1309737433}
   - component: {fileID: 1309737432}
-  - component: {fileID: 1309737435}
   - component: {fileID: 1309737436}
+  - component: {fileID: 1309737437}
   m_Layer: 5
   m_Name: Rule(2)
   m_TagString: Untagged
@@ -2665,7 +2637,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2676,8 +2648,8 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300000, guid: 3e2579860d4a4a845a610ccf3f72c092, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 3e2579860d4a4a845a610ccf3f72c092, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -2690,8 +2662,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1309737435}
-        m_TargetAssemblyTypeName: HowToPlayCanvas, Assembly-CSharp
+      - m_Target: {fileID: 1309737437}
+        m_TargetAssemblyTypeName: ruleButtons, Assembly-CSharp
         m_MethodName: pushButton
         m_Mode: 1
         m_Arguments:
@@ -2740,29 +2712,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309737430}
   m_CullTransparentMesh: 1
---- !u!114 &1309737435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309737430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
-  openWindowSE: {fileID: 0}
-  cancelSE: {fileID: 0}
-  rule1_Sprite: {fileID: 21300000, guid: 8118471c6dc92c145aa45e61496cde15, type: 3}
-  rule2_Sprite: {fileID: 21300000, guid: e3ae1cae7600b3f40a05e9ab7c9e05c5, type: 3}
-  operate_Sprite: {fileID: 21300000, guid: d21ad53cb59e04640a3e72c2ac9248be, type: 3}
-  item_Sprite: {fileID: 21300000, guid: a4cb53f084a22dc41a7930f777cf1294, type: 3}
-  Button_Sprite: {fileID: 21300000, guid: 3e2579860d4a4a845a610ccf3f72c092, type: 3}
-  ButtonPush_Sprite: {fileID: 21300000, guid: 26a226c3e7a672f4cad9d16079143a14, type: 3}
-  isNowSprite: 0
-  state: 2
 --- !u!114 &1309737436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2775,6 +2724,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee78abe65c083ec4ebc5934107130db1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1309737437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309737430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e0804e46f6040d468abcdfd43c1b88a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanvasScript: {fileID: 1697177194}
+  isNowSprit: 0
+  state: 2
+  buttonSprite: {fileID: 21300000, guid: 3e2579860d4a4a845a610ccf3f72c092, type: 3}
+  pushedSprite: {fileID: 21300000, guid: 26a226c3e7a672f4cad9d16079143a14, type: 3}
 --- !u!1 &1391328885
 GameObject:
   m_ObjectHideFlags: 0
@@ -2991,6 +2957,7 @@ GameObject:
   - component: {fileID: 1450378228}
   - component: {fileID: 1450378227}
   - component: {fileID: 1450378230}
+  - component: {fileID: 1450378231}
   m_Layer: 5
   m_Name: HowToPlayButton
   m_TagString: Menu
@@ -3062,8 +3029,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1450378230}
-        m_TargetAssemblyTypeName: HowToPlayCanvas, Assembly-CSharp
-        m_MethodName: HowToPlayButton
+        m_TargetAssemblyTypeName: HowToPlayButton, Assembly-CSharp
+        m_MethodName: pushButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3120,20 +3087,108 @@ MonoBehaviour:
   m_GameObject: {fileID: 1450378225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
+  m_Script: {fileID: 11500000, guid: 92076c8621d0cc14d988f73b11564706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
   openWindowSE: {fileID: 8300000, guid: 0fc1b4ad2ea174f4896d546c8c22eddb, type: 3}
-  cancelSE: {fileID: 0}
-  rule1_Sprite: {fileID: 0}
-  rule2_Sprite: {fileID: 0}
-  operate_Sprite: {fileID: 0}
-  item_Sprite: {fileID: 0}
-  Button_Sprite: {fileID: 0}
-  ButtonPush_Sprite: {fileID: 0}
-  isNowSprite: 0
-  state: 0
+  playerJoinController: {fileID: 1992854290}
+  CanvasScript: {fileID: 1697177194}
+--- !u!82 &1450378231
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450378225}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1467445038
 GameObject:
   m_ObjectHideFlags: 0
@@ -3745,6 +3800,8 @@ GameObject:
   - component: {fileID: 1697177191}
   - component: {fileID: 1697177193}
   - component: {fileID: 1697177192}
+  - component: {fileID: 1697177194}
+  - component: {fileID: 1697177195}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3787,7 +3844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3812,6 +3869,122 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697177190}
   m_CullTransparentMesh: 1
+--- !u!114 &1697177194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697177190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70aee974dd216ab4f8c523ba6dc4942d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerJoinController: {fileID: 1992854290}
+  audioSource: {fileID: 1697177195}
+  enterSE: {fileID: 8300000, guid: 025db4e9cf333cc438ddd2bb9654de83, type: 3}
+  cancelSE: {fileID: 8300000, guid: 8e314b456a6101f4db6f24eda38d9961, type: 3}
+  rule1_Sprite: {fileID: 21300000, guid: 8118471c6dc92c145aa45e61496cde15, type: 3}
+  rule2_Sprite: {fileID: 21300000, guid: e3ae1cae7600b3f40a05e9ab7c9e05c5, type: 3}
+  operate_Sprite: {fileID: 21300000, guid: d21ad53cb59e04640a3e72c2ac9248be, type: 3}
+  item_Sprite: {fileID: 21300000, guid: a4cb53f084a22dc41a7930f777cf1294, type: 3}
+--- !u!82 &1697177195
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697177190}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1711518252
 GameObject:
   m_ObjectHideFlags: 0
@@ -4253,6 +4426,7 @@ GameObject:
   - component: {fileID: 1992854287}
   - component: {fileID: 1992854288}
   - component: {fileID: 1992854289}
+  - component: {fileID: 1992854290}
   m_Layer: 0
   m_Name: PlayerInputManager
   m_TagString: Untagged
@@ -4331,6 +4505,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a04db0c9edcc974882a50c44066b32b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1992854290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992854286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40ce6efd15b3c346a06e68c83e82d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInputManager: {fileID: 1992854288}
 --- !u!1 &2061312521
 GameObject:
   m_ObjectHideFlags: 0
@@ -4365,7 +4552,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -68, y: 14.1}
+  m_AnchoredPosition: {x: -68, y: 14.099976}
   m_SizeDelta: {x: 2048, y: 379}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2061312523
@@ -4463,27 +4650,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2089313505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_PointAction: {fileID: 1054132383583890850, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_MoveAction: {fileID: 3710738434707379630, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_SubmitAction: {fileID: 2064916234097673511, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_CancelAction: {fileID: -1967631576421560919, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_LeftClickAction: {fileID: 8056856818456041789, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_MiddleClickAction: {fileID: 3279352641294131588, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_RightClickAction: {fileID: 3837173908680883260, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: 1b0e32ba96d7ee44e92ad27afa36ea88, type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
+  m_SendPointerHoverToParent: 0
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
