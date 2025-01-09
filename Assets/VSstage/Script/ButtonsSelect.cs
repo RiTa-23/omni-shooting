@@ -6,6 +6,7 @@ public class ButtonsSelect : MonoBehaviour
 {
     private Button button;
     bool isSelect;
+    [SerializeField] EventSystem eventSystem;
 
     void Start()
     {
@@ -14,7 +15,7 @@ public class ButtonsSelect : MonoBehaviour
 
     void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject == gameObject&&!isSelect)
+        if (eventSystem.currentSelectedGameObject == gameObject&&!isSelect)
         {
             isSelect = true;
             button.onClick.Invoke();

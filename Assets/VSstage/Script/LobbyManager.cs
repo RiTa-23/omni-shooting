@@ -51,6 +51,9 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //UI操作
+        UIController();
+
         p = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("プレイヤー人数"+p.Length);
 
@@ -140,5 +143,81 @@ public class LobbyManager : MonoBehaviour
         }
         readyNum = 0;
 
+    }
+
+    //ロビーでのUI操作
+    [SerializeField] GameObject buttons;
+    [SerializeField] EventSystem eventSystem;
+    GameObject HowToPanel;
+    GameObject[] button;
+    bool isMenuOpen;
+    void UIController()
+    {
+        //現在選択されているオブジェクト確認
+        print(eventSystem.currentSelectedGameObject);
+
+        HowToPanel = GameObject.Find("HowToPanel");
+        //スペースキーで遊び方
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            //遊び方オープン
+            GameObject menuButton = GameObject.FindWithTag("Menu");
+            if (menuButton != null&& HowToPanel==null)
+            {
+                menuButton.GetComponent<Button>().onClick.Invoke();
+            }
+            //遊び方クローズ
+            GameObject XButton = GameObject.FindWithTag("returnPlayer");
+            if (XButton != null&& HowToPanel!=null)
+            {
+                XButton.GetComponent<Button>().onClick.Invoke();
+            }
+        }
+        //ページ移動
+        if (HowToPanel != null && buttons != null)
+        {
+            int selectNum = 0;
+            GameObject[] button = new GameObject[buttons.transform.childCount];
+            for (int i = 0; i < buttons.transform.childCount; i++)
+            {
+                button[i] = buttons.transform.GetChild(i).gameObject;
+                if (button[i] == eventSystem.currentSelectedGameObject)
+                {
+                    selectNum = i;
+                    print("selectNum：" + i);
+                }
+                print(button[i] + "：" + i);
+            }
+            //右に移動
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                print("右矢印");
+                if (selectNum != buttons.transform.childCount - 1)
+                {
+                    button[selectNum + 1].GetComponent<Button>().onClick.Invoke();
+                }
+                else
+                {
+                    print("右端から左端へ");
+                    button[0].GetComponent<Button>().onClick.Invoke();
+                }
+
+            }
+            //左に移動
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                print("左矢印");
+                if (selectNum != 0)
+                {
+                    button[selectNum - 1].GetComponent<Button>().onClick.Invoke();
+                }
+                else
+                {
+                    //一番左端
+                    print("左端から右端へ");
+                    button[buttons.transform.childCount - 1].GetComponent<Button>().onClick.Invoke();
+                }
+            }
+        }
     }
 }
