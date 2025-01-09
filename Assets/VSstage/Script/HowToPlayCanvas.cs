@@ -49,7 +49,7 @@ public class HowToPlayCanvas : MonoBehaviour
     void Start()
     {
         HowToPlayCanvas_ = GameObject.Find("HowToPlayCanvas");
-        Panel = HowToPlayCanvas_.transform.Find("Panel").gameObject;
+        Panel = HowToPlayCanvas_.transform.Find("HowToPanel").gameObject;
         Image = Panel.transform.Find("Image").GetComponent<Image>();
 
         buttons = Panel.transform.Find("buttons").gameObject;
@@ -59,7 +59,7 @@ public class HowToPlayCanvas : MonoBehaviour
         item = buttons.transform.Find("Item").gameObject;
 
         nowState = pageState.rule1;
-
+        print(nowState);
     }
 
     void SwitchPageState(pageState state)

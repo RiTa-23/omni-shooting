@@ -17,7 +17,7 @@ public class HowToPlayButton : MonoBehaviour
     void Start()
     {
         HowToPlayCanvas_ = GameObject.Find("HowToPlayCanvas");
-        Panel = HowToPlayCanvas_.transform.Find("Panel").gameObject;
+        Panel = HowToPlayCanvas_.transform.Find("HowToPanel").gameObject;
         audioSource=GetComponent<AudioSource>();
     }
 

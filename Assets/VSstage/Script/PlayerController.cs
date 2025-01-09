@@ -292,24 +292,26 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
-    private void OnOpenMenu()
-    {
-        GameObject menuButton = GameObject.FindWithTag("Menu");
-        if (menuButton != null)
-        {
-            menuButton.GetComponent<Button>().onClick.Invoke();
-            playerInput.SwitchCurrentActionMap("UI");
-        }
-    }
-    private void OnCancel()
-    {
-        GameObject XButton = GameObject.FindWithTag("returnPlayer");
-        if (XButton != null)
-        {
-            XButton.GetComponent<Button>().onClick.Invoke();
-            playerInput.SwitchCurrentActionMap("Player");
-        }
-    }
+    //ローカルマルチの場合はコントローラーにUI menu操作させない
+
+    //private void OnOpenMenu()
+    //{
+    //    GameObject menuButton = GameObject.FindWithTag("Menu");
+    //    if (menuButton != null)
+    //    {
+    //        menuButton.GetComponent<Button>().onClick.Invoke();
+    //        playerInput.SwitchCurrentActionMap("UI");
+    //    }
+    //}
+    //private void OnCancel()
+    //{
+    //    GameObject XButton = GameObject.FindWithTag("returnPlayer");
+    //    if (XButton != null)
+    //    {
+    //        XButton.GetComponent<Button>().onClick.Invoke();
+    //        playerInput.SwitchCurrentActionMap("Player");
+    //    }
+    //}
 
     // Update is called once per frame
     void Update()
