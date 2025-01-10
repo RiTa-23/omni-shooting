@@ -183,20 +183,31 @@ public class LobbyManager : MonoBehaviour
             XButton.GetComponent<Button>().onClick.Invoke();
         }
     }
+    //皮革用にprevious変数設置
     private float previousHorizontal = 0f;
     private float previousVertical = 0f;
     void UIController()
     {
         float horizontal = Input.GetAxisRaw("plusHorizontal");
+        float vertical = Input.GetAxisRaw("crossVertical");
 
         //現在選択されているオブジェクト確認
         print(eventSystem.currentSelectedGameObject);
 
         HowToPanel = GameObject.Find("HowToPanel");
         //スペースキーで遊び方
-        if(Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.JoystickButton9))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             OpenMenu();
+            CloseMenu();
+        }
+        //コントローラー十字キーでのメニューopen/close
+        if(vertical >= 0.8 && previousVertical < 0.8)
+        {
+            OpenMenu();
+        }
+        if(vertical <= -0.8 && previousVertical > -0.8)
+        {
             CloseMenu();
         }
         //ページ移動
@@ -246,5 +257,6 @@ public class LobbyManager : MonoBehaviour
             }
         }
         previousHorizontal = horizontal;
+        previousVertical = vertical;
     }
 }

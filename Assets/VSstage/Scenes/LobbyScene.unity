@@ -2392,7 +2392,6 @@ GameObject:
   - component: {fileID: 1303950397}
   - component: {fileID: 1303950396}
   - component: {fileID: 1303950395}
-  - component: {fileID: 1303950399}
   - component: {fileID: 1303950400}
   m_Layer: 5
   m_Name: Xbutton
@@ -2514,18 +2513,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303950393}
   m_CullTransparentMesh: 1
---- !u!114 &1303950399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303950393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d94b2281b968474d8927072aa4a3ebc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1303950400
 MonoBehaviour:
   m_ObjectHideFlags: 0

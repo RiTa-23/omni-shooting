@@ -95,16 +95,16 @@ public class PlayerStatus : MonoBehaviour
 
         if (!isDead&&!isInvincible)
         {
+            //ダメージが小数点なら小数点以下一桁に整えてダメージログ追加
+            string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
+            LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "[ " + formattedDamage + " damage ]\n";
+
             HPUpdate(-damage);
             //敵のリザルト調整
             if (owner != P_Num)//敵に受けた攻撃なら
             {
                 //与えたダメージ数の加算
                 VS_GM.giveDamage[owner] += damage;
-
-                //ダメージが小数点なら小数点以下一桁に整えてダメージログ追加
-                string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
-                LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "[ " + formattedDamage + " damage ]\n";
 
                 //HPが0以下なら自分を倒した敵のキル数を加算
                 if (HP<=0)
@@ -117,6 +117,11 @@ public class PlayerStatus : MonoBehaviour
                 {
                     StartCoroutine(playerController.vibration(0.8f, 0.8f, 0.2f));
                 }
+            }
+            else if(HP<=0)//自滅した場合
+            {
+                LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "：kill\n";
+                StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
             }
             //hitEffect
             Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
@@ -134,7 +139,6 @@ public class PlayerStatus : MonoBehaviour
         {
             string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
             LogText.text += "player" + (owner + 1) + " -×-> " + "player" + (P_Num + 1) + "[" + formattedDamage + "damage]\n";
-            LogText.text += "無敵状態によりダメージ無効\n";
         }
     }
 
