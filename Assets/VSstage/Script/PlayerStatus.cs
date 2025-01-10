@@ -2,6 +2,8 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -87,16 +89,25 @@ public class PlayerStatus : MonoBehaviour
     //ダメージ処理
     public void DamageProcess(float damage,int owner)
     {
-        if(!isDead&&!isInvincible)
+        //ログの追加
+        TextMeshProUGUI LogText;
+        LogText = GameObject.Find("LogText").GetComponent<TextMeshProUGUI>();
+        //ダメージが小数点なら小数点以下一桁に整える
+        string formattedDamage = (System.Math.Abs(damage % 1)<float.Epsilon) ? damage.ToString("F0") : damage.ToString("F1");
+        LogText.text += "player" + owner + " -> " + "player" + P_Num + "：" + formattedDamage + "damage\n";
+
+        if (!isDead&&!isInvincible)
         {
             HPUpdate(-damage);
             //敵のリザルト調整
             if (owner != P_Num)//敵に受けた攻撃なら
             {
+                //与えたダメージ数の加算
                 VS_GM.giveDamage[owner] += damage;
                 //HPが0以下なら自分を倒した敵のキル数を加算
                 if(HP<=0)
                 {
+                    LogText.text += "player" + owner + " -> " + "player" + P_Num + "：kill\n";
                     VS_GM.killNum[owner]++;
                     StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
                 }
@@ -110,7 +121,7 @@ public class PlayerStatus : MonoBehaviour
             audioSource.PlayOneShot(hitSE);
             gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.15f).OnComplete(() =>
             {
-                if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                if (UnityEngine.ColorUtility.TryParseHtmlString(colorCode, out Color color))
                 {
                     spriteRenderer.color = color;
                 }
@@ -272,7 +283,7 @@ public class PlayerStatus : MonoBehaviour
 
         //プレイヤーごとに見た目を変える
         colorCode = P_color[P_Num];
-        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+        if (UnityEngine.ColorUtility.TryParseHtmlString(colorCode, out Color color))
         {
             spriteRenderer.color = color;
         }
