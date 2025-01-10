@@ -12,7 +12,7 @@ public class PlayerItem : MonoBehaviour
         ItemList.Add(Item.ItemName.speedUp, 0);
         ItemList.Add(Item.ItemName.maxSpeedUp, 0);
         ItemList.Add(Item.ItemName.maxEnergyUp, 0);
-        ItemList.Add(Item.ItemName.energyRecoverySpeedUp, 0);
+        ItemList.Add(Item.ItemName.energySpeedUp, 0);
         ItemList.Add(Item.ItemName.rapidFireUp, 0);
     }
 
@@ -27,7 +27,7 @@ public class PlayerItem : MonoBehaviour
         ItemList[Item.ItemName.speedUp] = 0;
         ItemList[Item.ItemName.maxSpeedUp] = 0;
         ItemList[Item.ItemName.maxEnergyUp] = 0;
-        ItemList[Item.ItemName.energyRecoverySpeedUp] = 0;
+        ItemList[Item.ItemName.energySpeedUp] = 0;
         ItemList[Item.ItemName.rapidFireUp] = 0;
     }
 }

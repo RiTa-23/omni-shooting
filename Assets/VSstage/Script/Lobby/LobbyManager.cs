@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -51,6 +52,19 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //確認用
+        if (Input.anyKeyDown)
+        {
+            foreach (KeyCode code in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(code))
+                {
+                    Debug.Log(code);
+                    break;
+                }
+            }
+        }
+
         //UI操作
         UIController();
 
@@ -151,27 +165,39 @@ public class LobbyManager : MonoBehaviour
     GameObject HowToPanel;
     GameObject[] button;
     bool isMenuOpen;
+    void OpenMenu()
+    {
+        //遊び方オープン
+        GameObject menuButton = GameObject.FindWithTag("Menu");
+        if (menuButton != null && HowToPanel == null)
+        {
+            menuButton.GetComponent<Button>().onClick.Invoke();
+        }
+    }
+    void CloseMenu()
+    {
+        //遊び方クローズ
+        GameObject XButton = GameObject.FindWithTag("returnPlayer");
+        if (XButton != null && HowToPanel != null)
+        {
+            XButton.GetComponent<Button>().onClick.Invoke();
+        }
+    }
+    private float previousHorizontal = 0f;
+    private float previousVertical = 0f;
     void UIController()
     {
+        float horizontal = Input.GetAxisRaw("plusHorizontal");
+
         //現在選択されているオブジェクト確認
         print(eventSystem.currentSelectedGameObject);
 
         HowToPanel = GameObject.Find("HowToPanel");
         //スペースキーで遊び方
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.JoystickButton9))
         {
-            //遊び方オープン
-            GameObject menuButton = GameObject.FindWithTag("Menu");
-            if (menuButton != null&& HowToPanel==null)
-            {
-                menuButton.GetComponent<Button>().onClick.Invoke();
-            }
-            //遊び方クローズ
-            GameObject XButton = GameObject.FindWithTag("returnPlayer");
-            if (XButton != null&& HowToPanel!=null)
-            {
-                XButton.GetComponent<Button>().onClick.Invoke();
-            }
+            OpenMenu();
+            CloseMenu();
         }
         //ページ移動
         if (HowToPanel != null && buttons != null)
@@ -189,7 +215,7 @@ public class LobbyManager : MonoBehaviour
                 print(button[i] + "：" + i);
             }
             //右に移動
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (horizontal >= 0.8 && previousHorizontal < 0.8)
             {
                 print("右矢印");
                 if (selectNum != buttons.transform.childCount - 1)
@@ -204,7 +230,7 @@ public class LobbyManager : MonoBehaviour
 
             }
             //左に移動
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (horizontal <= -0.8 && previousHorizontal > -0.8)
             {
                 print("左矢印");
                 if (selectNum != 0)
@@ -219,5 +245,6 @@ public class LobbyManager : MonoBehaviour
                 }
             }
         }
+        previousHorizontal = horizontal;
     }
 }

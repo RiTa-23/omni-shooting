@@ -89,12 +89,9 @@ public class PlayerStatus : MonoBehaviour
     //ダメージ処理
     public void DamageProcess(float damage,int owner)
     {
-        //ログの追加
+        //ログ設定
         TextMeshProUGUI LogText;
         LogText = GameObject.Find("LogText").GetComponent<TextMeshProUGUI>();
-        //ダメージが小数点なら小数点以下一桁に整える
-        string formattedDamage = (System.Math.Abs(damage % 1)<float.Epsilon) ? damage.ToString("F0") : damage.ToString("F1");
-        LogText.text += "player" + owner + " -> " + "player" + P_Num + "：" + formattedDamage + "damage\n";
 
         if (!isDead&&!isInvincible)
         {
@@ -104,10 +101,15 @@ public class PlayerStatus : MonoBehaviour
             {
                 //与えたダメージ数の加算
                 VS_GM.giveDamage[owner] += damage;
+
+                //ダメージが小数点なら小数点以下一桁に整えてダメージログ追加
+                string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
+                LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "[ " + formattedDamage + " damage ]\n";
+
                 //HPが0以下なら自分を倒した敵のキル数を加算
-                if(HP<=0)
+                if (HP<=0)
                 {
-                    LogText.text += "player" + owner + " -> " + "player" + P_Num + "：kill\n";
+                    LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "：kill\n";
                     VS_GM.killNum[owner]++;
                     StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
                 }
@@ -127,6 +129,12 @@ public class PlayerStatus : MonoBehaviour
                 }
             });
 
+        }
+        else if(isInvincible)
+        {
+            string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
+            LogText.text += "player" + (owner + 1) + " -×-> " + "player" + (P_Num + 1) + "[" + formattedDamage + "damage]\n";
+            LogText.text += "無敵状態によりダメージ無効\n";
         }
     }
 
