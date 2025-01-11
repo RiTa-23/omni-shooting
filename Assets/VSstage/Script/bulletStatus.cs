@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,8 @@ public class bulletStatus : MonoBehaviour
 
     [SerializeField]bool isTriggerDestroy;//è’ìÀÇµÇΩÇÁè¡Ç¶ÇÈÇ©
     private string colorCode;
+
+    
 
     private void Start()
     {

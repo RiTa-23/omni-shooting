@@ -2,6 +2,8 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -87,16 +89,27 @@ public class PlayerStatus : MonoBehaviour
     //ダメージ処理
     public void DamageProcess(float damage,int owner)
     {
-        if(!isDead&&!isInvincible)
+        //ログ設定
+        TextMeshProUGUI LogText;
+        LogText = GameObject.Find("LogText").GetComponent<TextMeshProUGUI>();
+
+        if (!isDead&&!isInvincible)
         {
+            //ダメージが小数点なら小数点以下一桁に整えてダメージログ追加
+            string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
+            LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "[ " + formattedDamage + " damage ]\n";
+
             HPUpdate(-damage);
             //敵のリザルト調整
             if (owner != P_Num)//敵に受けた攻撃なら
             {
+                //与えたダメージ数の加算
                 VS_GM.giveDamage[owner] += damage;
+
                 //HPが0以下なら自分を倒した敵のキル数を加算
-                if(HP<=0)
+                if (HP<=0)
                 {
+                    LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "：kill\n";
                     VS_GM.killNum[owner]++;
                     StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
                 }
@@ -105,17 +118,27 @@ public class PlayerStatus : MonoBehaviour
                     StartCoroutine(playerController.vibration(0.8f, 0.8f, 0.2f));
                 }
             }
+            else if(HP<=0)//自滅した場合
+            {
+                LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "：kill\n";
+                StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
+            }
             //hitEffect
             Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
             audioSource.PlayOneShot(hitSE);
             gameObject.GetComponent<SpriteRenderer>().DOColor(Color.white, 0.15f).OnComplete(() =>
             {
-                if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                if (UnityEngine.ColorUtility.TryParseHtmlString(colorCode, out Color color))
                 {
                     spriteRenderer.color = color;
                 }
             });
 
+        }
+        else if(isInvincible)
+        {
+            string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
+            LogText.text += "player" + (owner + 1) + " -×-> " + "player" + (P_Num + 1) + "[" + formattedDamage + "damage]\n";
         }
     }
 
@@ -272,7 +295,7 @@ public class PlayerStatus : MonoBehaviour
 
         //プレイヤーごとに見た目を変える
         colorCode = P_color[P_Num];
-        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+        if (UnityEngine.ColorUtility.TryParseHtmlString(colorCode, out Color color))
         {
             spriteRenderer.color = color;
         }
