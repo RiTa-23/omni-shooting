@@ -41,7 +41,7 @@ InputManager:
     m_Name: crossVertical
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
+    negativeButton: joystick button 7
     positiveButton: 
     altNegativeButton: a
     altPositiveButton: d
@@ -51,7 +51,7 @@ InputManager:
     snap: 1
     invert: 0
     type: 2
-    axis: 6
+    axis: 7
     joyNum: 0
   - serializedVersion: 3
     m_Name: plusHorizontal

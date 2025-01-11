@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LogController : MonoBehaviour
 {
@@ -10,13 +11,28 @@ public class LogController : MonoBehaviour
     TextMeshProUGUI LogText;
     bool isOpen = false;
 
-    float previousVertical=0f;
     // Start is called before the first frame update
 
     // Update is called once per frame
     void Update()
     {
-        float vertical = Input.GetAxisRaw("crossVertical");
+        //D-pad（十字キー）の取得
+        bool isDup = false;
+        bool isDdown = false;
+        foreach (var gamepad in Gamepad.all)
+        {
+            if (gamepad.dpad.up.wasPressedThisFrame)
+            {
+                Debug.Log("D-pad Up pressed");
+                isDup = true;
+            }
+            else if (gamepad.dpad.down.wasPressedThisFrame)
+            {
+                Debug.Log("D-pad Down pressed");
+                isDdown = true;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!isOpen)
@@ -29,15 +45,14 @@ public class LogController : MonoBehaviour
             }
         }
         //コントローラー十字での操作
-        if(vertical >= 0.8 && previousVertical < 0.8)
+        if(isDup)
         {
             LogOpne();
         }
-        if(vertical <= -0.8 && previousVertical > -0.8)
+        if(isDdown)
         {
             LogClose();
         }
-        previousVertical = vertical;
     }
     void LogOpne()
     {

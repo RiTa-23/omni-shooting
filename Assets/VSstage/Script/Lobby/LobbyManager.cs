@@ -4,6 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
@@ -52,18 +54,18 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //確認用
-        if (Input.anyKeyDown)
-        {
-            foreach (KeyCode code in System.Enum.GetValues(typeof(KeyCode)))
-            {
-                if (Input.GetKeyDown(code))
-                {
-                    Debug.Log(code);
-                    break;
-                }
-            }
-        }
+        ////確認用
+        //if (Input.anyKeyDown)
+        //{
+        //    foreach (KeyCode code in System.Enum.GetValues(typeof(KeyCode)))
+        //    {
+        //        if (Input.GetKeyDown(code))
+        //        {
+        //            Debug.Log(code);
+        //            break;
+        //        }
+        //    }
+        //}
 
         //UI操作
         UIController();
@@ -183,13 +185,42 @@ public class LobbyManager : MonoBehaviour
             XButton.GetComponent<Button>().onClick.Invoke();
         }
     }
-    //皮革用にprevious変数設置
-    private float previousHorizontal = 0f;
-    private float previousVertical = 0f;
+    string previousKey="";
     void UIController()
     {
-        float horizontal = Input.GetAxisRaw("plusHorizontal");
-        float vertical = Input.GetAxisRaw("crossVertical");
+
+        //gamepadの押されているキーの取得
+        string keyName = "";
+        foreach (var gamepad in Gamepad.all)
+        {
+            foreach (var control in gamepad.allControls)
+            {
+                if (control is ButtonControl button && button.wasPressedThisFrame)
+                {
+                    keyName = control.name;
+                    Debug.Log($"押されたボタン: {keyName}");
+                    break; // 最初に押されたボタンを検出したらループを抜ける
+                }
+            }
+        }
+        //D-pad（十字キー）の取得
+        //D-padとスティックどちらも同じ名前で出力されてしまうため
+        bool isDup = false;
+        bool isDdown = false;
+        foreach(var gamepad in Gamepad.all)
+        {
+            if (gamepad.dpad.up.wasPressedThisFrame)
+            {
+                Debug.Log("D-pad Up pressed");
+                isDup = true;
+            }
+            else if (gamepad.dpad.down.wasPressedThisFrame)
+            {
+                Debug.Log("D-pad Down pressed");
+                isDdown = true;
+            }
+        }
+
 
         //現在選択されているオブジェクト確認
         print(eventSystem.currentSelectedGameObject);
@@ -202,11 +233,11 @@ public class LobbyManager : MonoBehaviour
             CloseMenu();
         }
         //コントローラー十字キーでのメニューopen/close
-        if(vertical >= 0.8 && previousVertical < 0.8)
+        if(isDup)
         {
             OpenMenu();
         }
-        if(vertical <= -0.8 && previousVertical > -0.8)
+        if(isDdown)
         {
             CloseMenu();
         }
@@ -226,7 +257,7 @@ public class LobbyManager : MonoBehaviour
                 print(button[i] + "：" + i);
             }
             //右に移動
-            if (horizontal >= 0.8 && previousHorizontal < 0.8)
+            if (keyName=="right")
             {
                 print("右矢印");
                 if (selectNum != buttons.transform.childCount - 1)
@@ -241,7 +272,7 @@ public class LobbyManager : MonoBehaviour
 
             }
             //左に移動
-            if (horizontal <= -0.8 && previousHorizontal > -0.8)
+            if (keyName=="left")
             {
                 print("左矢印");
                 if (selectNum != 0)
@@ -256,7 +287,6 @@ public class LobbyManager : MonoBehaviour
                 }
             }
         }
-        previousHorizontal = horizontal;
-        previousVertical = vertical;
+        previousKey = keyName;
     }
 }
