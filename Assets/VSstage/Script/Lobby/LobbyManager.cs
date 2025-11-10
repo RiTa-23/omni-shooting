@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,6 +9,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class LobbyManager : MonoBehaviour
@@ -25,11 +27,16 @@ public class LobbyManager : MonoBehaviour
     //player
     GameObject[] p;
 
-    [SerializeField]GameObject playerInputManager;
+    [SerializeField] GameObject playerInputManager;
+    //Stage
+    [SerializeField] TextMeshProUGUI stageSelectText;
+    [SerializeField] string[] stageNames = new string[3] { "Small", "Medium", "Large" };
+    int selectStageNum = 0;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        stageSelectText.text = stageNames[selectStageNum];
         //Playerの初期化
         p = GameObject.FindGameObjectsWithTag("Player");
         for(int i=0; i<p.Length; i++)
@@ -126,7 +133,7 @@ public class LobbyManager : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene("vs_stage");
+        SceneManager.LoadScene(stageNames[selectStageNum]);
     }
 
     //Readyまたはstandby状態に変化したときの処理（trueならReady）
@@ -207,6 +214,8 @@ public class LobbyManager : MonoBehaviour
         //D-padとスティックどちらも同じ名前で出力されてしまうため
         bool isDup = false;
         bool isDdown = false;
+        bool isDright = false;  
+        bool isDleft = false;
         foreach(var gamepad in Gamepad.all)
         {
             if (gamepad.dpad.up.wasPressedThisFrame)
@@ -219,6 +228,17 @@ public class LobbyManager : MonoBehaviour
                 Debug.Log("D-pad Down pressed");
                 isDdown = true;
             }
+            else if (gamepad.dpad.right.wasPressedThisFrame)
+            {
+                Debug.Log("D-pad Right pressed");
+                isDright = true;
+            }
+            else if (gamepad.dpad.left.wasPressedThisFrame)
+            {
+                Debug.Log("D-pad Left pressed");
+                isDleft = true;
+            }
+
         }
 
 
@@ -227,19 +247,40 @@ public class LobbyManager : MonoBehaviour
 
         HowToPanel = GameObject.Find("HowToPanel");
         //スペースキーで遊び方
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space)&&!isAllReady)
         {
             OpenMenu();
             CloseMenu();
         }
         //コントローラー十字キーでのメニューopen/close
-        if(isDup)
+        if(isDup&&!isAllReady)
         {
             OpenMenu();
         }
-        if(isDdown)
+        if (isDdown)
         {
             CloseMenu();
+        }
+        if(HowToPanel==null)
+        {
+            if(isDright)
+            {
+                selectStageNum++;
+                if (selectStageNum >= stageNames.Length)
+                {
+                    selectStageNum = 0;
+                }
+                stageSelectText.text = stageNames[selectStageNum];
+            }
+            if(isDleft)
+            {
+                selectStageNum--;
+                if (selectStageNum < 0)
+                {
+                    selectStageNum = stageNames.Length - 1;
+                }
+                stageSelectText.text = stageNames[selectStageNum];
+            }
         }
         //ページ移動
         if (HowToPanel != null && buttons != null)
@@ -257,7 +298,7 @@ public class LobbyManager : MonoBehaviour
                 print(button[i] + "：" + i);
             }
             //右に移動
-            if (keyName=="right")
+            if (keyName == "right")
             {
                 print("右矢印");
                 if (selectNum != buttons.transform.childCount - 1)
@@ -269,10 +310,9 @@ public class LobbyManager : MonoBehaviour
                     print("右端から左端へ");
                     button[0].GetComponent<Button>().onClick.Invoke();
                 }
-
             }
             //左に移動
-            if (keyName=="left")
+            if (keyName == "left")
             {
                 print("左矢印");
                 if (selectNum != 0)

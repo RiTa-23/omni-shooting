@@ -9,10 +9,13 @@ EditorBuildSettings:
     path: Assets/VSstage/Scenes/LobbyScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/VSstage/Scenes/vs_stage.unity
+    path: Assets/VSstage/Scenes/Small.unity
     guid: 5cee5830bb31d374fb1516dce4670c9b
   - enabled: 1
-    path: Assets/VSstage/Scenes/vs_stage2.unity
+    path: Assets/VSstage/Scenes/Large.unity
     guid: 0260187ea3f0c40ecbadcc19bd5f54d8
+  - enabled: 1
+    path: Assets/VSstage/Scenes/Medium.unity
+    guid: b05958b3edf3d44eaba32ccb8a921af0
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: c5a12b0033fbd4fe9b9175d0d5f6dd71, type: 2}
