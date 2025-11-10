@@ -12,7 +12,7 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class LobbyManager : MonoBehaviour
 {
-    //readyó‘Ô‚©
+    //readyçŠ¶æ…‹ã‹
     public bool[] ready=new bool[4];
     int readyNum = 0;
     public bool isAllReady = false;
@@ -30,21 +30,21 @@ public class LobbyManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        //Player‚Ì‰Šú‰»
+        //Playerã®åˆæœŸåŒ–
         p = GameObject.FindGameObjectsWithTag("Player");
         for(int i=0; i<p.Length; i++)
         {
-            //ˆÊ’u‚ğ–ß‚·
+            //ä½ç½®ã‚’æˆ»ã™
             p[i].transform.position = Vector3.zero;
-            //‘€ì‰Â”\‚É‚·‚é
+            //æ“ä½œå¯èƒ½ã«ã™ã‚‹
             p[i].GetComponent<PlayerController>().AllControllArrow(true,false);
-            //HP‚ÆEnergy‘S‰ñ•œ
+            //HPã¨Energyå…¨å›å¾©
             p[i].GetComponent<PlayerStatus>().ResetStatus();
-            //LobbyManager‘ã“ü
+            //LobbyManagerä»£å…¥
             p[i].GetComponent<PlayerController>().lobbyManager = this;
-            //PlayerControllerƒXƒe[ƒ^ƒX‚à‰Šú‰»
+            //PlayerControllerã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚‚åˆæœŸåŒ–
             p[i].GetComponent<PlayerController>().ResetControllerStatus();
-            //ItemList‚Ì‰Šú‰»
+            //ItemListã®åˆæœŸåŒ–
             p[i].GetComponent<PlayerItem>().ResetItemList();
 
         }
@@ -54,7 +54,7 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ////Šm”F—p
+        ////ç¢ºèªç”¨
         //if (Input.anyKeyDown)
         //{
         //    foreach (KeyCode code in System.Enum.GetValues(typeof(KeyCode)))
@@ -67,13 +67,13 @@ public class LobbyManager : MonoBehaviour
         //    }
         //}
 
-        //UI‘€ì
+        //UIæ“ä½œ
         UIController();
 
         p = GameObject.FindGameObjectsWithTag("Player");
-        Debug.Log("ƒvƒŒƒCƒ„[l”"+p.Length);
+        Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼äººæ•°"+p.Length);
 
-        //l”ˆÈã‚ÌplayerBord‚ª‚ ‚ê‚Î”ñƒAƒNƒeƒBƒu‚É‚·‚é
+        //äººæ•°ä»¥ä¸Šã®playerBordãŒã‚ã‚Œã°éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
         int pBactive = 0;
         for(int i=0;i<4;i++)
         {
@@ -90,27 +90,27 @@ public class LobbyManager : MonoBehaviour
 
         for (int i=0; i<p.Length; i++)
         {
-            //playerBord‚ª”ñƒAƒNƒeƒBƒu‚È‚çƒAƒNƒeƒBƒu‚É‚·‚é
+            //playerBordãŒéã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚‰ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
             if (!playerBord[i].activeSelf)
             {
                 playerBord[i].SetActive(true);
             }
-            //Å‰‚Ìˆê‰ñ‚¾‚¯s‚¤€”õŠ®—¹‚Ìˆ—
+            //æœ€åˆã®ä¸€å›ã ã‘è¡Œã†æº–å‚™å®Œäº†ã®å‡¦ç†
             if (ready[i]&&!playerBord[i].transform.Find("Ready").gameObject.activeSelf)
             {
-                print("ƒvƒŒƒCƒ„[" + i + "€”õŠ®—¹I");
+                print("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼" + i + "æº–å‚™å®Œäº†ï¼");
                 audioSource.PlayOneShot(ReadySE);
                 readyNum++;
                 ReadyOrStandby(playerBord[i],true);
             }
-            //€”õŠ®—¹‚ğƒIƒt‚É‚·‚éi’N‚©‚ª‘Şº‚µ‚½‚Æ‚«‚ÉÀs‚³‚ê‚éj
+            //æº–å‚™å®Œäº†ã‚’ã‚ªãƒ•ã«ã™ã‚‹ï¼ˆèª°ã‹ãŒé€€å®¤ã—ãŸã¨ãã«å®Ÿè¡Œã•ã‚Œã‚‹ï¼‰
             if (!ready[i]&& playerBord[i].transform.Find("Ready").gameObject.activeSelf)
             {
                 ReadyOrStandby(playerBord[i], false);
             }
         }
 
-        //ƒvƒŒƒCƒ„[‘Sˆõ‚ª€”õŠ®—¹‚È‚çƒXƒe[ƒW‚ÉˆÚ“®‚³‚¹‚é
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å…¨å“¡ãŒæº–å‚™å®Œäº†ãªã‚‰ã‚¹ãƒ†ãƒ¼ã‚¸ã«ç§»å‹•ã•ã›ã‚‹
         if(readyNum==p.Length&&readyNum>1)
         {
             isAllReady = true;
@@ -122,14 +122,14 @@ public class LobbyManager : MonoBehaviour
             StartCoroutine(LoadScene());
         }
     }
-    //ŠÔ·‚ÅƒV[ƒ“‚ğ“Ç‚İ‚Ş
+    //æ™‚é–“å·®ã§ã‚·ãƒ¼ãƒ³ã‚’èª­ã¿è¾¼ã‚€
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("vs_stage");
     }
 
-    //Ready‚Ü‚½‚Ístandbyó‘Ô‚É•Ï‰»‚µ‚½‚Æ‚«‚Ìˆ—itrue‚È‚çReadyj
+    //Readyã¾ãŸã¯standbyçŠ¶æ…‹ã«å¤‰åŒ–ã—ãŸã¨ãã®å‡¦ç†ï¼ˆtrueãªã‚‰Readyï¼‰
     void ReadyOrStandby(GameObject playerBord,bool isReady)
     {
         playerBord.transform.Find("pull the triger").gameObject.SetActive(!isReady);
@@ -137,14 +137,14 @@ public class LobbyManager : MonoBehaviour
         playerBord.transform.Find("Ready").gameObject.SetActive(isReady);
     }
 
-    //‘Şº
+    //é€€å®¤
     public void ExitLobby(int playerNum)
     {
         audioSource.PlayOneShot(ExitSE);
-        //‘Şº‚·‚éƒvƒŒƒCƒ„[‚ğÁ‹
+        //é€€å®¤ã™ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¶ˆå»
         Destroy(p[playerNum].transform.parent.gameObject);
 
-        //ƒvƒŒƒCƒ„[‚ÌƒŠƒZƒbƒg
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒªã‚»ãƒƒãƒˆ
         p = GameObject.FindGameObjectsWithTag("Player");
         for(int i=0; i<p.Length;i++)
         {
@@ -152,7 +152,7 @@ public class LobbyManager : MonoBehaviour
             p[i].GetComponent<PlayerStatus>().ResetPlayer();
         }
 
-        //ready‚ÌƒŠƒZƒbƒg
+        //readyã®ãƒªã‚»ãƒƒãƒˆ
         for(int i=0;i<4;i++)
         {
             ready[i] = false;
@@ -161,7 +161,7 @@ public class LobbyManager : MonoBehaviour
 
     }
 
-    //ƒƒr[‚Å‚ÌUI‘€ì
+    //ãƒ­ãƒ“ãƒ¼ã§ã®UIæ“ä½œ
     [SerializeField] GameObject buttons;
     [SerializeField] EventSystem eventSystem;
     GameObject HowToPanel;
@@ -169,7 +169,7 @@ public class LobbyManager : MonoBehaviour
     bool isMenuOpen;
     void OpenMenu()
     {
-        //—V‚Ñ•ûƒI[ƒvƒ“
+        //éŠã³æ–¹ã‚ªãƒ¼ãƒ—ãƒ³
         GameObject menuButton = GameObject.FindWithTag("Menu");
         if (menuButton != null && HowToPanel == null)
         {
@@ -178,7 +178,7 @@ public class LobbyManager : MonoBehaviour
     }
     void CloseMenu()
     {
-        //—V‚Ñ•ûƒNƒ[ƒY
+        //éŠã³æ–¹ã‚¯ãƒ­ãƒ¼ã‚º
         GameObject XButton = GameObject.FindWithTag("returnPlayer");
         if (XButton != null && HowToPanel != null)
         {
@@ -189,7 +189,7 @@ public class LobbyManager : MonoBehaviour
     void UIController()
     {
 
-        //gamepad‚Ì‰Ÿ‚³‚ê‚Ä‚¢‚éƒL[‚Ìæ“¾
+        //gamepadã®æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã®å–å¾—
         string keyName = "";
         foreach (var gamepad in Gamepad.all)
         {
@@ -198,13 +198,13 @@ public class LobbyManager : MonoBehaviour
                 if (control is ButtonControl button && button.wasPressedThisFrame)
                 {
                     keyName = control.name;
-                    Debug.Log($"‰Ÿ‚³‚ê‚½ƒ{ƒ^ƒ“: {keyName}");
-                    break; // Å‰‚É‰Ÿ‚³‚ê‚½ƒ{ƒ^ƒ“‚ğŒŸo‚µ‚½‚çƒ‹[ƒv‚ğ”²‚¯‚é
+                    Debug.Log($"æŠ¼ã•ã‚ŒãŸãƒœã‚¿ãƒ³: {keyName}");
+                    break; // æœ€åˆã«æŠ¼ã•ã‚ŒãŸãƒœã‚¿ãƒ³ã‚’æ¤œå‡ºã—ãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
                 }
             }
         }
-        //D-padi\šƒL[j‚Ìæ“¾
-        //D-pad‚ÆƒXƒeƒBƒbƒN‚Ç‚¿‚ç‚à“¯‚¶–¼‘O‚Åo—Í‚³‚ê‚Ä‚µ‚Ü‚¤‚½‚ß
+        //D-padï¼ˆåå­—ã‚­ãƒ¼ï¼‰ã®å–å¾—
+        //D-padã¨ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã©ã¡ã‚‰ã‚‚åŒã˜åå‰ã§å‡ºåŠ›ã•ã‚Œã¦ã—ã¾ã†ãŸã‚
         bool isDup = false;
         bool isDdown = false;
         foreach(var gamepad in Gamepad.all)
@@ -222,17 +222,17 @@ public class LobbyManager : MonoBehaviour
         }
 
 
-        //Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒgŠm”F
+        //ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç¢ºèª
         print(eventSystem.currentSelectedGameObject);
 
         HowToPanel = GameObject.Find("HowToPanel");
-        //ƒXƒy[ƒXƒL[‚Å—V‚Ñ•û
+        //ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ã§éŠã³æ–¹
         if(Input.GetKeyDown(KeyCode.Space))
         {
             OpenMenu();
             CloseMenu();
         }
-        //ƒRƒ“ƒgƒ[ƒ‰[\šƒL[‚Å‚Ìƒƒjƒ…[open/close
+        //ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼åå­—ã‚­ãƒ¼ã§ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼open/close
         if(isDup)
         {
             OpenMenu();
@@ -241,7 +241,7 @@ public class LobbyManager : MonoBehaviour
         {
             CloseMenu();
         }
-        //ƒy[ƒWˆÚ“®
+        //ãƒšãƒ¼ã‚¸ç§»å‹•
         if (HowToPanel != null && buttons != null)
         {
             int selectNum = 0;
@@ -252,37 +252,37 @@ public class LobbyManager : MonoBehaviour
                 if (button[i] == eventSystem.currentSelectedGameObject)
                 {
                     selectNum = i;
-                    print("selectNumF" + i);
+                    print("selectNumï¼š" + i);
                 }
-                print(button[i] + "F" + i);
+                print(button[i] + "ï¼š" + i);
             }
-            //‰E‚ÉˆÚ“®
+            //å³ã«ç§»å‹•
             if (keyName=="right")
             {
-                print("‰E–îˆó");
+                print("å³çŸ¢å°");
                 if (selectNum != buttons.transform.childCount - 1)
                 {
                     button[selectNum + 1].GetComponent<Button>().onClick.Invoke();
                 }
                 else
                 {
-                    print("‰E’[‚©‚ç¶’[‚Ö");
+                    print("å³ç«¯ã‹ã‚‰å·¦ç«¯ã¸");
                     button[0].GetComponent<Button>().onClick.Invoke();
                 }
 
             }
-            //¶‚ÉˆÚ“®
+            //å·¦ã«ç§»å‹•
             if (keyName=="left")
             {
-                print("¶–îˆó");
+                print("å·¦çŸ¢å°");
                 if (selectNum != 0)
                 {
                     button[selectNum - 1].GetComponent<Button>().onClick.Invoke();
                 }
                 else
                 {
-                    //ˆê”Ô¶’[
-                    print("¶’[‚©‚ç‰E’[‚Ö");
+                    //ä¸€ç•ªå·¦ç«¯
+                    print("å·¦ç«¯ã‹ã‚‰å³ç«¯ã¸");
                     button[buttons.transform.childCount - 1].GetComponent<Button>().onClick.Invoke();
                 }
             }

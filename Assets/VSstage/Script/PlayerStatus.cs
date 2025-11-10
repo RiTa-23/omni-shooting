@@ -37,7 +37,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField]Slider Energybar;
     private SpriteRenderer spriteRenderer;
     //エネルギー自然回復量
-    public float energyNaturalRecovery=0.12f;
+    public float energyNaturalRecovery=10f;
     //カラーコード
     public string colorCode;
     //VS_GameManager
@@ -138,67 +138,72 @@ public class PlayerStatus : MonoBehaviour
         else if(isInvincible)
         {
             string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
-            LogText.text += "player" + (owner + 1) + " -×-> " + "player" + (P_Num + 1) + "[" + formattedDamage + "damage]\n";
+            LogText.text += "player" + (owner + 1) + " -X-> " + "player" + (P_Num + 1) + "[" + formattedDamage + "damage]\n";
         }
     }
 
-/*    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //弾に当たった時の処理
-        if (collision.gameObject.CompareTag("bullet") && !isDead)
+    /*    private void OnTriggerEnter2D(Collider2D collision)
         {
-            bulletStatus bulletStatus_;
-            bulletStatus_ = collision.GetComponent<bulletStatus>();
-
-            int killeMeEnemy = bulletStatus_.Owner;
-
-            if (killeMeEnemy!= P_Num)
+            //弾に当たった時の処理
+            if (collision.gameObject.CompareTag("bullet") && !isDead)
             {
-                HPUpdate(-bulletStatus_.Damage);
-                
-                //敵のリザルト調整
-                VS_GM.giveDamage[killeMeEnemy] += bulletStatus_.Damage;
-                //HPが0以下なら自分を倒した敵のキル数を加算
-                if (HP <= 0)
-                {
-                    VS_GM.killNum[killeMeEnemy]++;
-                    StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
-                }
-                else
-                {
-                    StartCoroutine(playerController.vibration(0.8f, 0.8f, 0.2f));
-                }
-                //弾を消す
-                Destroy(collision);
+                bulletStatus bulletStatus_;
+                bulletStatus_ = collision.GetComponent<bulletStatus>();
 
-                //hitEffect
-                Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
-                audioSource.PlayOneShot(hitSE);
-                gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
+                int killeMeEnemy = bulletStatus_.Owner;
+
+                if (killeMeEnemy!= P_Num)
                 {
-                    if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                    HPUpdate(-bulletStatus_.Damage);
+
+                    //敵のリザルト調整
+                    VS_GM.giveDamage[killeMeEnemy] += bulletStatus_.Damage;
+                    //HPが0以下なら自分を倒した敵のキル数を加算
+                    if (HP <= 0)
                     {
-                        spriteRenderer.color = color;
+                        VS_GM.killNum[killeMeEnemy]++;
+                        StartCoroutine(playerController.vibration(1f, 1f, 0.5f));
                     }
-                });  
+                    else
+                    {
+                        StartCoroutine(playerController.vibration(0.8f, 0.8f, 0.2f));
+                    }
+                    //弾を消す
+                    Destroy(collision);
+
+                    //hitEffect
+                    Instantiate(hitEffect, this.transform.position, Quaternion.identity, this.transform);
+                    audioSource.PlayOneShot(hitSE);
+                    gameObject.GetComponent<SpriteRenderer>().DOColor(Color.red, 0.15f).OnComplete(() =>
+                    {
+                        if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                        {
+                            spriteRenderer.color = color;
+                        }
+                    });  
+                }
             }
-        }
-    }*/
+        }*/
     public void EnergyUpdate(float recoveryAmount)
+    {
+        Energy += recoveryAmount;
+        Energybar.DOValue((float)Energy / (float)MaxEnergy, 0.5f);
+    }
+    void NaturalEnergyRecovery()
     {
         if (isInfinity)
         {
             Energy = MaxEnergy;
         }
-        else
+        if (Energy < MaxEnergy)
         {
-            Energy += recoveryAmount;
+            Energy += energyNaturalRecovery * Time.deltaTime;
             if (Energy > MaxEnergy)
             {
                 Energy = MaxEnergy;
             }
+            Energybar.DOValue((float)Energy / (float)MaxEnergy, 0.5f);
         }
-        Energybar.DOValue((float)Energy / (float)MaxEnergy,0.5f);
     }
     public void HPUpdate(float recoveryAmount)
     {
@@ -229,7 +234,7 @@ public class PlayerStatus : MonoBehaviour
     {   
         if (Energy < MaxEnergy)
         {
-            EnergyUpdate(energyNaturalRecovery);
+            NaturalEnergyRecovery();
         }
 
         //無敵・無限処理
@@ -308,7 +313,7 @@ public class PlayerStatus : MonoBehaviour
         isInvincible = false;
         MaxHP = 100;
         MaxEnergy = 100;
-        energyNaturalRecovery = 0.12f;
+        energyNaturalRecovery = 10f;
         HP = MaxHP;
         Energy = MaxEnergy;
         HPbar.value = (float)HP / (float)MaxHP;

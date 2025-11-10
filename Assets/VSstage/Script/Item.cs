@@ -17,13 +17,14 @@ public class Item : MonoBehaviour
     [SerializeField] Sprite invincible_img;
     [SerializeField] Sprite infinity_img;
 
+    //アイテム出現確率
     //[SerializeField] int speedUp_P = 15;
     //[SerializeField] int maxSpeedUp_P = 15;
-    int maxEnergyUp_P = 25;
+    int maxEnergyUp_P = 20;
     int rapidFireUp_P = 25;
-    int energySpeedUp_P = 25;
-    int lifeRecovery_P = 15;
-    int invincible_P = 5;
+    int energySpeedUp_P = 20;
+    int lifeRecovery_P = 20;
+    int invincible_P = 10;
     int infinity_P = 5;
 
     // Start is called before the first frame update
@@ -107,11 +108,11 @@ public class Item : MonoBehaviour
             GameObject player = collision.gameObject;
             int playerNum = player.GetComponent<PlayerStatus>().P_Num + 1;
 
-            //アイテム数が上限に達していない
+            //アイテム数が上限に達していない（5個まで）
             //もしくはアイテムリストに存在しない（上限がない）ならアイテムを取得する
             PlayerItem playerItem=player.GetComponent<PlayerItem>();
             var ItemList = playerItem.ItemList;
-            if (!ItemList.ContainsKey(thisItemName) || ItemList[thisItemName]<10)
+            if (!ItemList.ContainsKey(thisItemName) || ItemList[thisItemName]<5)
             {
                 //アイテムリストに追加
                 if(ItemList.ContainsKey(thisItemName))
@@ -138,7 +139,7 @@ public class Item : MonoBehaviour
                     //case ItemName.speedUp: playerController.force += 2.5f; break;
                     //case ItemName.maxSpeedUp: playerController.maxSpeed += 2; break;
                     case ItemName.maxEnergyUp: playerStatus.MaxEnergy += 20; break;
-                    case ItemName.energySpeedUp: playerStatus.energyNaturalRecovery += 0.04f; break;
+                    case ItemName.energySpeedUp: playerStatus.energyNaturalRecovery += 5f; break;
                     case ItemName.rapidFireUp:
                         if (playerController.intervalTime > 0.02)
                             playerController.intervalTime -= 0.025f; break;
