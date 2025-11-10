@@ -56,12 +56,12 @@ public class LogController : MonoBehaviour
     }
     void LogOpne()
     {
-        LogPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(777, 60), 0.5f);
+        LogPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-183, 973), 0.5f);
         isOpen = true;
     }
     void LogClose()
     {
-        LogPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(777, -85), 0.5f);
+        LogPanel.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-183, 760), 0.5f);
         isOpen = false;
     }
 }

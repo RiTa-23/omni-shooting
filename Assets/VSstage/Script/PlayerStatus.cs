@@ -97,7 +97,7 @@ public class PlayerStatus : MonoBehaviour
         {
             //ダメージが小数点なら小数点以下一桁に整えてダメージログ追加
             string formattedDamage = (System.Math.Abs(damage % 1) == 0) ? damage.ToString("F0") : damage.ToString("F1");
-            LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "[ " + formattedDamage + " damage ]\n";
+            LogText.text += "player" + (owner + 1) + " -> " + "player" + (P_Num + 1) + "(" + formattedDamage + " Damage)\n";
 
             HPUpdate(-damage);
             //敵のリザルト調整
