@@ -124,12 +124,12 @@ public class Item : MonoBehaviour
                 {
                     playerItem.AddItem(thisItemName);
                     //アイテムゲットのログ追加
-                    LogText.text += "player" + playerNum + " ： " + thisItemName + " Lv." + ItemList[thisItemName] + "\n";
+                    LogText.text += "player" + playerNum + " : " + thisItemName + " Lv." + ItemList[thisItemName] + "\n";
                 }
                 else
                 {
                     //アイテムログ追加
-                    LogText.text += "player" + playerNum + " ： " + thisItemName +"\n";
+                    LogText.text += "player" + playerNum + " : " + thisItemName +"\n";
                 }
 
 
