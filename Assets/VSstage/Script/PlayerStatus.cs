@@ -58,7 +58,7 @@ public class PlayerStatus : MonoBehaviour
     //無敵・無限
     bool isInvincible = false;
     bool isInfinity = false;
-    float invincibleTime = 10;//持続時間
+    float invincibleTime = 20;//持続時間
     float infinityTime = 5;
     float INVstartTime = 0;//開始時間
     float INFstartTime = 0;

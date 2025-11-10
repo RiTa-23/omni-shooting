@@ -20,14 +20,19 @@ public class Item : MonoBehaviour
     //アイテム出現確率
     //[SerializeField] int speedUp_P = 15;
     //[SerializeField] int maxSpeedUp_P = 15;
-    int maxEnergyUp_P = 20;
+    int maxEnergyUp_P = 25;
     int rapidFireUp_P = 25;
-    int energySpeedUp_P = 20;
-    int lifeRecovery_P = 20;
-    int invincible_P = 10;
+    int energySpeedUp_P = 25;
+    int lifeRecovery_P = 15;
+    int invincible_P = 5;
     int infinity_P = 5;
 
-    // Start is called before the first frame update
+    //アイテムの効果を変数で決定
+    private int maxEnergyUp_value = 40;
+    private float rapidFireUp_value = 0.05f;
+    private float energySpeedUp_value = 10f;
+    private int lifeRecovery_value = 30;
+
 
     void Start()
     {
@@ -138,12 +143,12 @@ public class Item : MonoBehaviour
                 {
                     //case ItemName.speedUp: playerController.force += 2.5f; break;
                     //case ItemName.maxSpeedUp: playerController.maxSpeed += 2; break;
-                    case ItemName.maxEnergyUp: playerStatus.MaxEnergy += 20; break;
-                    case ItemName.energySpeedUp: playerStatus.energyNaturalRecovery += 5f; break;
+                    case ItemName.maxEnergyUp: playerStatus.MaxEnergy += maxEnergyUp_value; break;
+                    case ItemName.energySpeedUp: playerStatus.energyNaturalRecovery += energySpeedUp_value; break;
                     case ItemName.rapidFireUp:
                         if (playerController.intervalTime > 0.02)
-                            playerController.intervalTime -= 0.025f; break;
-                    case ItemName.lifeRecovery: playerStatus.HPUpdate(20); break;
+                            playerController.intervalTime -= rapidFireUp_value; break;
+                    case ItemName.lifeRecovery: playerStatus.HPUpdate(lifeRecovery_value); break;
                     case ItemName.invincible: playerStatus.Invincible();break;
                     case ItemName.infinity: playerStatus.Infinity();break;
                 }
