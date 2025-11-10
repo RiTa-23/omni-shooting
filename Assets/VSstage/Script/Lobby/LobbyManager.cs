@@ -10,7 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -31,7 +30,7 @@ public class LobbyManager : MonoBehaviour
     //Stage
     [SerializeField] TextMeshProUGUI stageSelectText;
     [SerializeField] string[] stageNames = new string[3] { "Small", "Medium", "Large" };
-    int selectStageNum = 0;
+    static int selectStageNum = 0;
 
     void Start()
     {

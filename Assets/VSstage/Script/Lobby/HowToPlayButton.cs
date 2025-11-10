@@ -29,7 +29,7 @@ public class HowToPlayButton : MonoBehaviour
             Panel.SetActive(true);
             //パネルアニメーション
             Panel.transform.localScale = Vector3.zero;
-            Panel.transform.DOScale(new Vector3(1, 1, 1), 0.3f).onKill = (() =>
+            Panel.transform.DOScale(new Vector3(0.45f, 0.45f, 0.45f), 0.3f).onKill = (() =>
             {
                 //時間停止
                 if (Panel.activeSelf)
